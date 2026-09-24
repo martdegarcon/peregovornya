@@ -155,7 +155,7 @@ wss.on('connection', ws => {
   ws.on('pong', () => { ws.isAlive = true; });
   send(ws, {
     type: 'hello', ice: iceServers(),
-    cases: CASES.map(c => ({ id: c.id, title: c.title, dur: c.dur, blurb: c.context[0], names: { A: c.roles.A.name, B: c.roles.B.name } })),
+    cases: CASES.map(c => ({ id: c.id, cat: c.cat, title: c.title, dur: c.dur, blurb: c.context[0].length > 230 ? c.context[0].slice(0, 230).replace(/\s+\S*$/, '') + '…' : c.context[0], names: { A: c.roles.A.name, B: c.roles.B.name } })),
   });
   ws.on('message', raw => {
     let m; try { m = JSON.parse(raw); } catch { return; }

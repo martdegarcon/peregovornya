@@ -160,7 +160,8 @@ main{min-width:0}
 .how li::before{content:counter(s,decimal-leading-zero);font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.08em}
 .how b{font-weight:600}
 .how span{color:var(--ink-2);font-size:14px}
-.cases{display:grid;gap:10px}
+.cases{display:grid;gap:8px;max-height:430px;overflow:auto;padding:2px;margin:0 -2px;overscroll-behavior:contain}
+#catSeg label{font-size:13px}
 .case{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:var(--r-md);cursor:pointer;transition:border-color var(--fast) var(--ease),background var(--fast) var(--ease)}
 .case:hover{border-color:var(--line-2)}
 .case:has(input:checked){border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
@@ -413,6 +414,13 @@ function statsHTML(){const v=Object.values(stats);if(!v.length)return '';
     <div><b>${v.length}</b><span>${v.length%10===1&&v.length%100!==11?'партия':v.length%10>=2&&v.length%10<=4&&(v.length%100<10||v.length%100>=20)?'партии':'партий'}</span></div>
     <div><b>${Math.round(deals/v.length*100)}%</b><span>договорились</span></div>
     <div><b>${avg.toFixed(1)}</b><span>очков в среднем</span></div></div></div>`}
+let caseCat=store.get('neg_cat')||'all',caseQ='';
+function caseListHTML(){const q=caseQ.trim().toLowerCase();
+  const list=CASES.filter(c=>(caseCat==='all'||c.cat===caseCat)&&(!q||(c.title+' '+c.names.A+' '+c.names.B).toLowerCase().includes(q)));
+  if(!CASES.length)return '';if(!list.length)return '<p class="note" style="padding:12px 4px">Ничего не нашлось.</p>';
+  return list.map(c=>`<label class="case"><input type="radio" name="case" value="${esc(c.id)}" ${c.id===pickedCase?'checked':''}>
+    <div><div class="t">${esc(c.title)}</div><div class="m">${esc(c.names.A)} ↔ ${esc(c.names.B)} · ${c.cat==='work'?'работа':'пары и семья'}</div><div class="d">${esc(c.blurb)}</div></div></label>`).join('')}
+function bindCases(){document.querySelectorAll('input[name=case]').forEach(i=>i.onchange=()=>{pickedCase=i.value})}
 let cardFull=false,peekInfo=null,guidesOff=store.get('neg_guides_off')==='1';
 let pendingCode=(location.pathname.match(/^\/r\/(\d{4})$/)||[])[1]||null;
 let drafts={};try{drafts=JSON.parse(store.get('neg_drafts')||'{}')}catch(e){}
@@ -485,8 +493,7 @@ function render(){
 function nameField(){return `<label class="field"><span>Как тебя зовут?</span><input type="text" id="nameIn" maxlength="40" autocomplete="given-name" placeholder="Имя, которое увидит собеседник" value="${esc(nameDraft??myName)}"></label>`}
 
 function landing(){
-  const cs=CASES.map(c=>`<label class="case"><input type="radio" name="case" value="${esc(c.id)}" ${c.id===pickedCase?'checked':''}>
-    <div><div class="t">${esc(c.title)}</div><div class="m">${esc(c.names.A)} ↔ ${esc(c.names.B)} · ${c.dur.prep}+${c.dur.talk} мин</div><div class="d">${esc(c.blurb)}</div></div></label>`).join('');
+  const cs=caseListHTML();
   return `<div class="landing">
   <div class="stack lg">
     <section class="hero">
@@ -512,7 +519,10 @@ function landing(){
     <div class="tabs" role="tablist"><button type="button" role="tab" data-lt="create" aria-selected="${lobbyTab==='create'}">Создать комнату</button><button type="button" role="tab" data-lt="join" aria-selected="${lobbyTab==='join'}">У меня есть код</button></div>
     ${joinErr?`<p class="err" role="alert">${esc(joinErr)}</p>`:''}
     ${lobbyTab==='create'?`
-      <div class="field"><span>Кейс</span><div class="cases">${cs||'<p class="note">Загружаем кейсы…</p>'}</div></div>
+      <div class="field"><div class="row between"><span>Кейс</span><button class="linkbtn" id="randCase" type="button">Случайный</button></div>
+        <div class="seg" id="catSeg">${[['all','Все'],['family','Пары и семья'],['work','Работа']].map(([v,l])=>`<label><input type="radio" name="cat" value="${v}" ${caseCat===v?'checked':''}>${l} <span class="mono" style="color:var(--muted);font-size:12px;margin-left:4px">${v==='all'?CASES.length:CASES.filter(c=>c.cat===v).length}</span></label>`).join('')}</div>
+        <input type="text" id="caseQ" placeholder="Поиск по названию или имени" value="${esc(caseQ)}" autocomplete="off" aria-label="Поиск кейса">
+        <div class="cases" id="caseList">${cs||'<p class="note">Загружаем кейсы…</p>'}</div></div>
       <button class="btn primary wide" id="create" type="button" ${wsOpen&&CASES.length?'':'disabled'}>Создать комнату</button>
       <p class="note">Роли выберете вместе уже в комнате. Карточку собеседника не увидит никто из вас до разбора.</p>`
     :`<label class="field"><span>Код комнаты</span><input type="text" id="codeIn" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off" class="mono"><small>Или просто открой ссылку, которую прислал собеседник</small></label>
@@ -558,7 +568,7 @@ function guide(items,next){if(guidesOff)return `<button class="linkbtn" id="guid
 const LOCK='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 const TARGET='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5"/></svg>';
 // выделяем суммы и сроки — их ищут глазами чаще всего
-function hl(t){return esc(t).replace(/((\d[\d\s]*\d|\d)(\s?(₽|%|руб\w*|тыс\w*)|\s(дн\w*|недел\w*|месяц\w*|год\w*|лет|час\w*))|(одн\w*|дв[ае]|три|четыр\w*|пят\w*|полтор\w*|следующ\w*|ближайш\w*)\s(дн\w*|недел\w*|месяц\w*|год\w*))/gi,'<b>$&</b>')}
+function hl(t){return esc(t).replace(/((\d[\d\s]*\d|\d)(\s?(₽|%|руб[а-яё]*|тыс[а-яё]*)|\s(дн[а-яё]*|недел[а-яё]*|месяц[а-яё]*|год[а-яё]*|лет|час[а-яё]*))|(одн[а-яё]*|дв[ае]|три|четыр[а-яё]*|пят[а-яё]*|полтор[а-яё]*|следующ[а-яё]*|ближайш[а-яё]*)\s(дн[а-яё]*|недел[а-яё]*|месяц[а-яё]*|год[а-яё]*))/gi,'<b>$&</b>')}
 function cardHTML(r,opts={}){const R=st.case.roles[r];if(!R)return '';
   const mask=opts.maskable&&secretMasked,compact=opts.compact&&!cardFull;
   const tasks=`<section class="sec"><div class="sec-h">${TARGET}Твоя задача<small>· главное в переговорах</small></div><ol class="tasks">${R.tasks.map(x=>'<li><span>'+hl(x)+'</span></li>').join('')}</ol></section>`;
@@ -775,7 +785,11 @@ function bind(){
   document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{lobbyTab=b.dataset.lt;joinErr='';render()});
   document.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{cardTab=b.dataset.ct;lastKey='';render()});
   if($('nameIn'))$('nameIn').oninput=e=>{nameDraft=e.target.value};
-  document.querySelectorAll('input[name=case]').forEach(i=>i.onchange=()=>{pickedCase=i.value});
+  bindCases();
+  document.querySelectorAll('input[name=cat]').forEach(i=>i.onchange=()=>{caseCat=i.value;store.set('neg_cat',caseCat);$('caseList').innerHTML=caseListHTML();bindCases()});
+  if($('caseQ'))$('caseQ').oninput=e=>{caseQ=e.target.value;$('caseList').innerHTML=caseListHTML();bindCases()};
+  if($('randCase'))$('randCase').onclick=()=>{const pool=CASES.filter(c=>caseCat==='all'||c.cat===caseCat);const c=pool[Math.floor(Math.random()*pool.length)];pickedCase=c.id;caseQ='';$('caseQ').value='';$('caseList').innerHTML=caseListHTML();bindCases();
+    const el=document.querySelector(`input[name=case][value="${c.id}"]`);if(el)el.closest('.case').scrollIntoView({block:'nearest'});toast('Кейс: «'+c.title+'»')};
   if($('create'))$('create').onclick=()=>{if(!takeName())return;send({type:'create',caseId:pickedCase})};
   document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>send({type:'pickRole',role:b.dataset.pick}));
   document.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>send({type:'swapAnswer',v:b.dataset.swap==='1'}));
