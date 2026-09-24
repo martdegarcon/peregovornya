@@ -184,20 +184,39 @@ main{min-width:0}
 
 /* ---------- role card ---------- */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow)}
-.card-h{padding:20px 22px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.card-h h2{font-size:24px}
+.card-top{padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
+.card-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-h h2{font-size:26px}
 .card-h .who{margin-left:auto;font-size:13px;color:var(--muted)}
-.card-b{padding:14px 22px 22px;display:flex;flex-direction:column;gap:16px}
-.want{font-size:18px;font-weight:500;line-height:1.35;letter-spacing:-.015em}
-.card ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:4px;color:var(--ink-2)}
-.card ul li::marker{color:var(--muted)}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.secret{background:var(--inv);color:var(--on-inv);padding:20px 22px;display:flex;flex-direction:column;gap:10px}
-.secret .eyebrow{color:var(--inv-muted);display:flex;gap:8px;align-items:center}
-.secret ul{color:var(--on-inv)}
-.secret ul li::marker{color:var(--inv-muted)}
-.secret-toggle{align-self:flex-start;background:none;border:1px solid var(--inv-line);color:var(--on-inv);border-radius:6px;padding:4px 10px;font-size:12px}
-.secret.masked ul{filter:blur(7px);user-select:none;pointer-events:none}
+.want{font-size:21px;font-weight:600;line-height:1.3;letter-spacing:-.02em;max-width:36ch}
+.sec{padding:18px 22px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line)}
+.sec-h{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.sec-h small{font-weight:500;text-transform:none;letter-spacing:0;color:var(--muted);font-size:13px}
+.sec-h svg{width:16px;height:16px;flex:none}
+/* задача — главный блок */
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:t}
+.tasks li{counter-increment:t;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;font-size:17px;font-weight:500;line-height:1.4;letter-spacing:-.01em}
+.tasks li::before{content:counter(t);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);font:600 13px/1 var(--mono)}
+/* скрытая информация — второй акцент */
+.secret{background:var(--inv);color:var(--on-inv);padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.secret .sec-h{color:var(--on-inv)}
+.secret .sec-h small{color:var(--inv-muted)}
+.secret ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.secret li{font-size:16px;line-height:1.45;padding-left:14px;border-left:2px solid var(--inv-line)}
+.secret b,.card-top b{font-weight:700}
+.secret b{background:var(--inv-line);padding:0 3px;border-radius:3px}
+.secret-toggle{background:none;border:1px solid var(--inv-line);color:var(--on-inv);border-radius:6px;padding:4px 10px;font-size:12px;margin-left:auto}
+.secret.masked ul{filter:blur(8px);user-select:none;pointer-events:none}
+/* цели и позиция — фон, спокойнее */
+.goals{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px;color:var(--ink)}
+.goals li::marker{color:var(--muted)}
+.psy{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.psy h4{margin:0 0 6px;font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.psy ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--ink-2);line-height:1.45}
+.psy li::marker{color:var(--muted)}
+.sec-h{flex-wrap:wrap}
+@media (max-width:520px){.sec-h small{display:none}}
+.card-more{padding:12px 22px;border-top:1px solid var(--line);display:flex;justify-content:center}
 details.ctx{border:1px solid var(--line);border-radius:var(--r-md);background:var(--card)}
 details.ctx summary{padding:16px 22px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
 details.ctx summary::-webkit-details-marker{display:none}
@@ -243,6 +262,56 @@ details.ctx ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap
 .chk input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:none}
 .seg.three label{font-size:13px}
 
+/* ---------- lobby flow ---------- */
+.chip.none{border-style:dashed;color:var(--muted);background:transparent}
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.flow>li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:0 14px;padding-bottom:22px;position:relative}
+.flow>li:not(:last-child)::after{content:"";position:absolute;left:15px;top:34px;bottom:6px;width:1.5px;background:var(--line)}
+.flow .mk{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line-2);display:flex;align-items:center;justify-content:center;font:600 13px/1 var(--mono);color:var(--muted);background:var(--bg)}
+.flow li.cur .mk{border-color:var(--ink);color:var(--ink)}
+.flow li.done .mk{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.flow .bd{display:flex;flex-direction:column;gap:12px;padding-top:5px;min-width:0}
+.flow .bd>h2{font-size:18px}
+.flow li.todo .bd>h2{color:var(--muted)}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.role{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
+.role.mine{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.role .rn{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.role .holder{font-size:14px;color:var(--muted)}
+.role.mine .holder{color:var(--ink);font-weight:600}
+.ask{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:var(--inv);color:var(--on-inv);border-radius:var(--r-sm);padding:12px 14px}
+.ask .btn{border-color:var(--inv-line);color:var(--on-inv)}
+.ask .btn.primary{background:var(--on-inv);color:var(--inv);border-color:var(--on-inv)}
+.ask .btn:hover{background:transparent;opacity:.85}
+.rules5{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;color:var(--ink-2)}
+.rules5 b{color:var(--ink);font-weight:600}
+.startbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px}
+.guide{border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.guide ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.guide li{padding-left:2px}
+.guide li::marker{font:600 13px/1 var(--mono);color:var(--muted)}
+.guide .next{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.expect{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.expect li{display:grid;grid-template-columns:92px 1fr;gap:12px;font-size:14px;color:var(--ink-2)}
+.expect li b{font:500 11px/1.6 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- score ---------- */
+.board{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.board .line{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:10px}
+.board .line span:first-child{text-align:right}
+.board .nm{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board .sc{font:700 26px/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.pts-col{display:flex;flex-direction:column;gap:8px}
+.pts-col .tot{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px}
+.pts-col .tot b{font:700 28px/1 var(--mono)}
+.pts-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink-2)}
+.pts-row span:last-child{font:600 14px/1.4 var(--mono);color:var(--ink);white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.stats div{background:var(--bg);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.stats b{font:700 26px/1 var(--mono)}
+.stats span{font-size:13px;color:var(--muted)}
+
 /* ---------- overlay / toast ---------- */
 .ov{position:fixed;inset:0;background:rgba(20,20,19,.4);z-index:40;display:flex;justify-content:flex-end}
 .sheet{background:var(--bg);width:min(560px,100%);height:100%;overflow:auto;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(32px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
@@ -286,6 +355,7 @@ details.ctx ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap
       <div class="who" id="whoAside"></div>
       <button class="linkbtn" id="callToggle" type="button">Свернуть видео</button>
     </div>
+    <div class="board" id="boardBox" hidden></div>
   </aside>
   <main id="app"></main>
 </div>
@@ -308,6 +378,8 @@ details.ctx ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap
     <p>Кто → что делает → когда → на каких условиях → что будет при нарушении. «Будем стараться» и «обсудим потом» — не договорённость. Не договориться тоже можно, но у этого есть последствия.</p>
     <h3>Что оценивается</h3>
     <ul><li>Как защищены приоритеты</li><li>Насколько выгодна договорённость</li><li>Насколько она конкретна и реалистична</li><li>Как использована скрытая информация</li><li>Сколько удалось вытащить из собеседника</li><li>Что стало с отношениями персонажей</li></ul>
+    <h3>Очки</h3>
+    <ul><li>Договорились конкретно (заполнены хотя бы 3 из 4: кто, когда, условия, нарушение) — +3 обоим, размыто — +1, не договорились — 0.</li><li>Вытащил(а) секрет собеседника — +2, узнал(а), потому что он раскрыл сам, — +1. Засчитывается, когда подтвердили оба.</li><li>Удержал(а) свой секрет — +1.</li><li>Пришлось снять придуманную деталь — −1.</li></ul>
     <p class="note">Продавить собеседника — не обязательно хороший результат. Иногда лучший итог — оба получили важное и не создали себе новую проблему.</p>
   </div>
 </div>
@@ -330,6 +402,18 @@ let clientId=store.get('neg_id');if(!clientId){clientId=Math.random().toString(3
 let myName=store.get('neg_name')||'',nameDraft=null;
 let CASES=[],ICE=[{urls:'stun:stun.l.google.com:19302'}];
 let st=null,skew=0,lastKey='',lobbyTab='create',cardTab='card',joinErr='',pickedCase=null,secretMasked=false;
+let stats={};try{stats=JSON.parse(store.get('neg_stats')||'{}')}catch(e){}
+function recordStats(){if(!st||st.phase!==3||!st.score||!st.me)return;const k=st.code+':'+st.round;
+  stats[k]={deal:st.result==='deal',pts:st.score[st.me].total,c:st.case.id,t:(stats[k]&&stats[k].t)||Date.now()};
+  const ks=Object.keys(stats).sort((a,b)=>stats[a].t-stats[b].t);while(ks.length>200)delete stats[ks.shift()];
+  store.set('neg_stats',JSON.stringify(stats))}
+function statsHTML(){const v=Object.values(stats);if(!v.length)return '';
+  const deals=v.filter(x=>x.deal).length,avg=v.reduce((a,x)=>a+x.pts,0)/v.length;
+  return `<div class="stack sm"><span class="eyebrow">Твоя статистика · на этом устройстве</span><div class="stats">
+    <div><b>${v.length}</b><span>${v.length%10===1&&v.length%100!==11?'партия':v.length%10>=2&&v.length%10<=4&&(v.length%100<10||v.length%100>=20)?'партии':'партий'}</span></div>
+    <div><b>${Math.round(deals/v.length*100)}%</b><span>договорились</span></div>
+    <div><b>${avg.toFixed(1)}</b><span>очков в среднем</span></div></div></div>`}
+let cardFull=false,peekInfo=null,guidesOff=store.get('neg_guides_off')==='1';
 let pendingCode=(location.pathname.match(/^\/r\/(\d{4})$/)||[])[1]||null;
 let drafts={};try{drafts=JSON.parse(store.get('neg_drafts')||'{}')}catch(e){}
 const dkey=()=>st?st.code+':'+st.round:'';
@@ -341,9 +425,9 @@ let ws=null,wsOpen=false,retry=0;
 function connect(){
   ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host);
   ws.onopen=()=>{wsOpen=true;retry=0;setConn('on','онлайн');
-    if(myName){send({type:'id',clientId,name:myName});
-      const code=st?st.code:(pendingCode||store.get('neg_room'));
-      if(code&&(st||store.get('neg_room')||pendingCode))send({type:'join',code});}
+    if(myName)send({type:'id',clientId,name:myName});
+    if(st&&myName)send({type:'join',code:st.code});
+    else if(pendingCode)send({type:'peek',code:pendingCode});
     if(!st)render();
   };
   ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(_){return}onMsg(m)};
@@ -352,16 +436,22 @@ function connect(){
 function send(m){if(ws&&wsOpen)ws.send(JSON.stringify(m))}
 function onMsg(m){
   if(m.type==='hello'){CASES=m.cases;ICE=m.ice||ICE;if(!pickedCase&&CASES[0])pickedCase=CASES[0].id;if(!st)render();return}
-  if(m.type==='error'){joinErr=m.msg;store.del('neg_room');if(pendingCode){lobbyTab='join'}pendingCode=null;st=null;history.replaceState(null,'','/');render();return}
+  if(m.type==='error'){joinErr=m.msg;store.del('neg_room');if(pendingCode){send({type:'peek',code:pendingCode})}st=null;render();return}
   if(m.type==='kicked'){st=null;store.del('neg_room');toast(m.msg);render();return}
   if(m.type==='rtc'){onRtc(m);return}
+  if(m.type==='peek'){peekInfo=m;if(m.ok&&m.member&&myName){send({type:'join',code:m.code});return}render();return}
   if(m.type==='state'){
     const prev=st;st=m;skew=m.now-Date.now();joinErr='';pendingCode=null;
     store.set('neg_room',m.code);
     if(location.pathname!=='/r/'+m.code)history.replaceState(null,'','/r/'+m.code);
     if(prev&&prev.round!==m.round){toast('Реванш: вы поменялись ролями');cardTab='card';secretMasked=false}
     if(prev&&prev.phase!==m.phase)onPhaseChange(m.phase);
-    const key=[m.phase,m.me,m.code,m.round,!!partnerP(),cardTab].join('|');
+    if(prev&&prev.phase===0&&m.phase===0){const P=m.partner,pP=prev.partner;
+      if(P&&!pP)toast(P.name+' в комнате');
+      if(m.swap==='them'&&prev.swap!=='them')toast(P.name+' предлагает поменяться ролями');
+      if(prev.swap==='me'&&!m.swap)toast(prev.self.role!==m.self.role?'Вы поменялись ролями':'Обмен отклонён');}
+    const key=[m.phase,m.me,m.code,m.round,!!(m.partner&&m.partner.online),cardTab,m.phase===0?JSON.stringify([m.self,m.partner,m.swap]):''].join('|');
+    recordStats();
     if(key!==lastKey){lastKey=key;render()}else updateLive();
     syncCall();
   }
@@ -372,8 +462,8 @@ function onPhaseChange(p){
   if(p===3)toast(st.result==='deal'?'Сделка закрыта. Карты открыты':'Не договорились. Карты открыты');
 }
 const me=()=>st&&st.me,them=()=>st&&other(st.me);
-function partnerP(){return st&&st.players[them()]}
-function nameOf(r){const p=st&&st.players[r];return p?p.name:'—'}
+function partnerP(){return st&&st.partner}
+function nameOf(r){const p=st&&r&&st.players[r];return p?p.name:'—'}
 function roleName(r){return st.case.names[r]}
 
 /* ============ render ============ */
@@ -385,7 +475,7 @@ function render(){
   $('steps').hidden=!inRoom;
   [...$('steps').children].forEach((s,i)=>{s.className=i===ph?'cur':i<ph?'done':''});
   $('stepMini').textContent=inRoom?`${ph+1}/4 · ${['Комната','Подготовка','Переговоры','Разбор'][ph]}`:'';
-  if(!inRoom)app.innerHTML=pendingCode&&!myName?inviteScreen():pendingCode?`<div class="panel">Подключаемся к комнате ${esc(pendingCode)}…</div>`:landing();
+  if(!inRoom)app.innerHTML=pendingCode?inviteScreen():landing();
   else app.innerHTML=[roomScreen,prepScreen,talkScreen,debriefScreen][st.phase]();
   app.firstElementChild&&app.firstElementChild.classList.add('enter');
   bind();updateLive();paintTiles();
@@ -397,7 +487,6 @@ function nameField(){return `<label class="field"><span>Как тебя зову
 function landing(){
   const cs=CASES.map(c=>`<label class="case"><input type="radio" name="case" value="${esc(c.id)}" ${c.id===pickedCase?'checked':''}>
     <div><div class="t">${esc(c.title)}</div><div class="m">${esc(c.names.A)} ↔ ${esc(c.names.B)} · ${c.dur.prep}+${c.dur.talk} мин</div><div class="d">${esc(c.blurb)}</div></div></label>`).join('');
-  const pc=CASES.find(c=>c.id===pickedCase)||CASES[0]||{names:{A:'Роль A',B:'Роль B'}};
   return `<div class="landing">
   <div class="stack lg">
     <section class="hero">
@@ -406,11 +495,17 @@ function landing(){
       <p class="lead">Два игрока, у каждого своя карточка роли и скрытая информация. Ведущий не нужен: таймеры, правила и разбор берёт на себя стол.</p>
     </section>
     <ol class="how">
-      <li><b>Комната</b><span>Создай и отправь ссылку. Созвон прямо здесь.</span></li>
+      <li><b>Комната</b><span>Создай комнату и отправь ссылку. Вместе выберите роли. Созвон прямо здесь.</span></li>
       <li><b>Подготовка · 5 мин</b><span>Читаешь свою карточку и отвечаешь себе на три вопроса.</span></li>
       <li><b>Переговоры · 15 мин</b><span>Говорите и вместе пишете договорённость. Сделка — когда подписали оба.</span></li>
       <li><b>Разбор</b><span>Карты открываются. Видно, что вытащили друг из друга.</span></li>
     </ol>
+    ${statsHTML()}
+    <ul class="expect">
+      <li><b>Время</b><span>Около 25 минут на партию</span></li>
+      <li><b>Нужно</b><span>Собеседник, камера или хотя бы микрофон, лучше наушники</span></li>
+      <li><b>Не нужно</b><span>Регистрация, приложения, ведущий</span></li>
+    </ul>
   </div>
   <section class="form panel stack">
     ${nameField()}
@@ -418,76 +513,120 @@ function landing(){
     ${joinErr?`<p class="err" role="alert">${esc(joinErr)}</p>`:''}
     ${lobbyTab==='create'?`
       <div class="field"><span>Кейс</span><div class="cases">${cs||'<p class="note">Загружаем кейсы…</p>'}</div></div>
-      <div class="field"><span>Моя роль</span><div class="seg" id="roleSeg">
-        <label><input type="radio" name="rl" value="R" checked>Случайно</label>
-        <label><input type="radio" name="rl" value="A">${esc(pc.names.A)}</label>
-        <label><input type="radio" name="rl" value="B">${esc(pc.names.B)}</label>
-      </div></div>
-      <button class="btn primary wide" id="create" type="button" ${wsOpen&&CASES.length?'':'disabled'}>Создать комнату</button>`
+      <button class="btn primary wide" id="create" type="button" ${wsOpen&&CASES.length?'':'disabled'}>Создать комнату</button>
+      <p class="note">Роли выберете вместе уже в комнате. Карточку собеседника не увидит никто из вас до разбора.</p>`
     :`<label class="field"><span>Код комнаты</span><input type="text" id="codeIn" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off" class="mono"><small>Или просто открой ссылку, которую прислал собеседник</small></label>
       <button class="btn primary wide" id="join" type="button" ${wsOpen?'':'disabled'}>Войти</button>`}
   </section></div>`}
 
-function inviteScreen(){return `<section class="stack lg" style="max-width:520px">
-  <div class="stack sm"><span class="eyebrow">Приглашение · комната ${esc(pendingCode)}</span><h1>Тебя позвали на переговоры</h1><p class="lead">Представься, и ты сразу окажешься в комнате. Регистрация не нужна.</p></div>
+function inviteScreen(){const I=peekInfo;
+  if(!I)return `<div class="panel">Открываем приглашение…</div>`;
+  if(!I.ok||I.full)return `<section class="stack lg" style="max-width:560px">
+    <div class="stack sm"><span class="eyebrow">Комната ${esc(pendingCode)}</span><h1>${I.ok?'В комнате уже двое':'Комната не найдена'}</h1>
+    <p class="lead">${I.ok?'Здесь уже идёт игра. Попроси у собеседника новую ссылку или создай свою комнату.':'Возможно, её закрыли или сервер перезапускался. Попроси новую ссылку или создай свою комнату.'}</p></div>
+    <button class="btn primary" id="declineInvite" type="button" style="align-self:flex-start">Создать свою комнату</button></section>`;
+  return `<section class="stack lg" style="max-width:560px">
+  <div class="stack sm"><span class="eyebrow">Приглашение · комната ${esc(I.code)}</span>
+    <h1>${I.host?esc(I.host)+' зовёт тебя на переговоры':'Тебя позвали на переговоры'}</h1>
+    <p class="lead">Кейс «${esc(I.title)}». Представься, и ты сразу окажешься в комнате.</p></div>
+  <ul class="expect">
+    <li><b>В комнате</b><span>Выберете роли. Видно только имена персонажей, без спойлеров.</span></li>
+    <li><b>Время</b><span>${I.dur.prep} минут подготовки, ${I.dur.talk} минут разговора по видео, потом разбор</span></li>
+    <li><b>Нужно</b><span>Камера или хотя бы микрофон, лучше наушники</span></li>
+  </ul>
+  ${joinErr?`<p class="err" role="alert">${esc(joinErr)}</p>`:''}
   <div class="panel stack">${nameField()}<button class="btn primary wide" id="acceptInvite" type="button">Войти в комнату</button></div>
-  <button class="linkbtn" id="declineInvite" type="button">Создать свою комнату вместо этого</button>
+  <button class="linkbtn" id="declineInvite" type="button" style="align-self:flex-start">Создать свою комнату вместо этого</button>
 </section>`}
 
-function whoRows(){const r=me(),o=them(),P=st.players[o];
+function whoRows(){const S=st.self,P=st.partner;
+  const chip=r=>r?`<span class="chip ${r}">${r}</span>`:`<span class="chip none">?</span>`;
   let pst='ждём подключения',cls='',dot='';
-  if(P){dot=P.online?'on':'off';
+  if(P){dot=P.online?'on':'off';const o=P.role;
     if(!P.online){pst='отключился';cls='st-bad'}
-    else if(st.phase===0){pst='в комнате';cls='st-ok'}
+    else if(st.phase===0){pst=!P.role?'выбирает роль':!P.rulesOk?'читает правила':'готов(а) начать';cls=P.role&&P.rulesOk?'st-ok':''}
     else if(st.phase===1){pst=st.ready[o]?'готов(а)':'готовится';cls=st.ready[o]?'st-ok':''}
     else if(st.phase===2){pst=st.nodeal[o]?'предлагает разойтись':st.sign[o]?'подписал(а)':'обсуждает';cls=st.nodeal[o]?'st-bad':st.sign[o]?'st-ok':''}
-    else if(st.phase===3){pst=st.rematch[o]?'хочет реванш':'на разборе';cls=st.rematch[o]?'st-ok':''}}
-  return `<div class="person"><span class="chip ${r}">${r}</span><span class="nm">${esc(myName)}</span><span class="st">${esc(roleName(r))} · ты</span></div>
-  <div class="person"><span class="chip ${o}">${o}</span><span class="nm">${esc(P?P.name:'Собеседник')}</span><span class="st ${cls}"><i class="dot ${dot}" style="display:inline-block;margin-right:6px;vertical-align:1px"></i>${esc(pst)}</span></div>`}
+    else {pst=st.rematch[o]?'хочет реванш':'на разборе';cls=st.rematch[o]?'st-ok':''}}
+  return `<div class="person">${chip(S.role)}<span class="nm">${esc(myName)}</span><span class="st">${S.role?esc(roleName(S.role))+' · ты':'ты · роль не выбрана'}</span></div>
+  <div class="person">${chip(P&&P.role)}<span class="nm">${esc(P?P.name:'Собеседник')}</span><span class="st ${cls}"><i class="dot ${dot}" style="display:inline-block;margin-right:6px;vertical-align:1px"></i>${esc(pst)}</span></div>`}
 
+function guide(items,next){if(guidesOff)return `<button class="linkbtn" id="guidesToggle" type="button" style="align-self:flex-start">Показать подсказки</button>`;
+  return `<div class="guide" role="note"><div class="row between"><span class="eyebrow">Что сейчас делать</span><button class="linkbtn" id="guidesToggle" type="button">Скрыть</button></div>
+  <ol>${items.map(x=>'<li>'+x+'</li>').join('')}</ol>${next?`<p class="next">${next}</p>`:''}</div>`}
+
+const LOCK='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
+const TARGET='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5"/></svg>';
+// выделяем суммы и сроки — их ищут глазами чаще всего
+function hl(t){return esc(t).replace(/((\d[\d\s]*\d|\d)(\s?(₽|%|руб\w*|тыс\w*)|\s(дн\w*|недел\w*|месяц\w*|год\w*|лет|час\w*))|(одн\w*|дв[ае]|три|четыр\w*|пят\w*|полтор\w*|следующ\w*|ближайш\w*)\s(дн\w*|недел\w*|месяц\w*|год\w*))/gi,'<b>$&</b>')}
 function cardHTML(r,opts={}){const R=st.case.roles[r];if(!R)return '';
-  const li=a=>'<ul>'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
-  const mask=opts.maskable&&secretMasked;
+  const mask=opts.maskable&&secretMasked,compact=opts.compact&&!cardFull;
+  const tasks=`<section class="sec"><div class="sec-h">${TARGET}Твоя задача<small>· главное в переговорах</small></div><ol class="tasks">${R.tasks.map(x=>'<li><span>'+hl(x)+'</span></li>').join('')}</ol></section>`;
+  const secret=`<section class="secret ${mask?'masked':''}"><div class="sec-h">${LOCK}${opts.player?'Скрывал(а) '+esc(R.name):'Знаешь только ты'}<small>· ${opts.player?'скрытая информация':'собеседник этого не видит'}</small>${opts.maskable?`<button class="secret-toggle" id="maskBtn" type="button">${mask?'Показать':'Скрыть с экрана'}</button>`:''}</div>
+    <ul>${R.hidden.map(x=>'<li>'+hl(x)+'</li>').join('')}</ul></section>`;
+  const goals=`<section class="sec"><div class="sec-h">Цели<small>· к чему стремишься в итоге</small></div><ul class="goals">${R.goals.map(x=>'<li>'+hl(x)+'</li>').join('')}</ul></section>`;
+  const psy=`<section class="sec"><div class="sec-h">Позиция<small>· как думает персонаж</small></div><div class="psy">
+    <div><h4>Считает</h4><ul>${R.believes.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div>
+    <div><h4>Боится</h4><ul>${R.fears.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div></div></section>`;
   return `<article class="card">
-  <div class="card-h"><span class="chip ${r}">${r}</span><h2>${esc(R.name)}</h2>${opts.player?`<span class="who">играет ${esc(nameOf(r))}</span>`:''}</div>
-  <div class="card-b">
-    <p class="want">${esc(R.want)}</p>
-    <div class="cols">
-      <div><span class="eyebrow">Считает</span>${li(R.believes)}</div>
-      <div><span class="eyebrow">Боится</span>${li(R.fears)}</div>
-      <div><span class="eyebrow">Задача</span>${li(R.tasks)}</div>
-      <div><span class="eyebrow">Цели</span>${li(R.goals)}</div>
-    </div>
-  </div>
-  <div class="secret ${mask?'masked':''}">
-    <div class="row between"><span class="eyebrow">Скрытая информация · знает только ${esc(R.name)}</span>${opts.maskable?`<button class="secret-toggle" id="maskBtn" type="button">${mask?'Показать':'Скрыть с экрана'}</button>`:''}</div>
-    ${li(R.hidden)}
-  </div></article>`}
+  <div class="card-top"><div class="card-h"><span class="chip ${r}">${r}</span><h2>${esc(R.name)}</h2>${opts.player?`<span class="who">играет ${esc(nameOf(r))}</span>`:''}</div>
+    <p class="want">${esc(R.want)}</p></div>
+  ${tasks}${secret}${compact?`<div class="card-more"><button class="linkbtn" id="cardMore" type="button">Показать цели и позицию персонажа</button></div>`:goals+psy+(opts.compact?`<div class="card-more"><button class="linkbtn" id="cardMore" type="button">Свернуть до главного</button></div>`:'')}
+  </article>`}
 function ctxHTML(open){const c=st.case;return `<details class="ctx" ${open?'open':''}><summary>Контекст и ограничения</summary><div class="in">
   ${c.context.map(p=>'<p>'+esc(p)+'</p>').join('')}<span class="eyebrow" style="margin-top:6px">Ограничения</span><ul>${c.constraints.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div></details>`}
 
-function roomScreen(){const link=location.origin+'/r/'+st.code;return `<section class="stack lg">
-  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}»</span><h1>Ждём собеседника</h1><p class="lead">Ты играешь <b>${esc(roleName(me()))}</b>. Карточку роли откроешь на подготовке, когда подключатся оба.</p></div>
-  <div class="panel stack">
-    <span class="eyebrow">Код комнаты</span><div class="code">${esc(st.code)}</div>
-    <div class="linkrow"><input type="text" id="linkIn" readonly value="${esc(link)}" aria-label="Ссылка-приглашение"><button class="btn" id="copyLink" type="button">Скопировать</button></div>
-    <p class="note">Отправь ссылку собеседнику. Имя он введёт при входе.</p>
-  </div>
-  <div class="panel stack">
-    <h2>Перед стартом</h2>
-    <ul class="checks">
-      <li id="ck1">Собеседник подключился</li>
-      <li id="ck2">Камера и микрофон включены — полоска на твоём видео двигается, когда говоришь</li>
-      <li id="ck3">Видеосвязь с собеседником установлена</li>
-    </ul>
-    <div class="row"><button class="btn primary" id="start" type="button">Начать подготовку</button><button class="btn ghost" id="leave" type="button">Выйти</button></div>
-    <p class="note" id="startNote"></p>
-  </div>
-  ${ctxHTML(true)}
+function roomScreen(){const S=st.self,P=st.partner,link=location.origin+'/r/'+st.code,pn=P?esc(P.name):'собеседник';
+  const s1=!!P,s2=!!(S.role&&P&&P.role&&S.role!==P.role),s3=!!(S.rulesOk&&P&&P.rulesOk),can=s1&&s2&&s3;
+  const cur=!s1?1:!s2?2:!s3?3:4;
+  const cls=n=>n<cur?'done':n===cur?'cur':'todo';
+  const head=[
+    ['Позови собеседника','Отправь ссылку. Пока ждёшь, можно уже выбрать роль и прочитать правила.'],
+    ['Выберите роли',S.role?`Ты берёшь роль «${esc(roleName(S.role))}». Ждём, пока ${pn} выберет свою.`:'Каждый берёт одну роль. Видно только имя персонажа, карточку откроешь на подготовке.'],
+    ['Прочитайте правила',S.rulesOk?`Ты отметил(а) «Понятно». Ждём, пока ${pn} дочитает.`:'Пять пунктов, минута чтения. Каждый отмечает «Понятно».'],
+    ['Всё готово','Нажмите «Начать подготовку»: откроются ваши карточки и пойдёт таймер на '+st.case.dur.prep+' минут.']][cur-1];
+  const roleTile=r=>{const h=st.players[r],mine=S.role===r,theirs=h&&!mine;
+    let btn='';
+    if(!h)btn=`<button class="btn ${S.role?'':'primary'} sm" data-pick="${r}" type="button">${S.role?'Перейти на эту роль':'Взять эту роль'}</button>`;
+    else if(theirs&&S.role)btn=st.swap==='me'?`<button class="btn sm" type="button" disabled>Ждём ответа…</button>`:`<button class="btn sm" data-pick="${r}" type="button">Предложить обмен</button>`;
+    return `<div class="role ${mine?'mine':''}"><div class="row"><span class="chip ${r}">${r}</span><span class="rn">${esc(roleName(r))}</span></div>
+      <span class="holder">${mine?'Это ты':h?esc(h.name):'Свободна'}</span>${btn}</div>`};
+  const missing=[!s1&&'собеседник не подключился',s1&&!s2&&'роли не распределены',!S.rulesOk&&'ты не отметил(а) правила',P&&!P.rulesOk&&`${pn} ещё читает правила`].filter(Boolean);
+  return `<section class="stack lg">
+  <div class="stack sm"><span class="eyebrow">Комната ${esc(st.code)} · «${esc(st.case.title)}»</span><h1>${head[0]}</h1><p class="lead">${head[1]}</p></div>
+  <ol class="flow">
+    <li class="${cls(1)}"><span class="mk">${1<cur?'✓':1}</span><div class="bd"><h2>${s1?pn+' в комнате':'Собеседник'}</h2>
+      ${s1?'':`<div class="panel stack"><span class="eyebrow">Код комнаты</span><div class="code">${esc(st.code)}</div>
+        <div class="linkrow"><input type="text" id="linkIn" readonly value="${esc(link)}" aria-label="Ссылка-приглашение"><button class="btn primary" id="copyLink" type="button">Скопировать ссылку</button></div>
+        <p class="note">По ссылке собеседник введёт имя и сразу попадёт сюда. Код пригодится, если диктуешь голосом.</p></div>`}</div></li>
+    <li class="${cls(2)}"><span class="mk">${2<cur?'✓':2}</span><div class="bd"><h2>Роли</h2>
+      ${st.swap==='them'?`<div class="ask" role="alert"><span>${pn} предлагает поменяться ролями</span><div class="row"><button class="btn sm primary" data-swap="1" type="button">Поменяться</button><button class="btn sm" data-swap="0" type="button">Оставить как есть</button></div></div>`:''}
+      <div class="roles">${roleTile('A')}${roleTile('B')}</div>
+      <div class="row between"><p class="note" style="max-width:48ch">Здесь только имена персонажей. Свою карточку каждый увидит на подготовке, чужую — только на разборе.</p>
+        ${s2?'':`<button class="btn sm ghost" id="randRoles" type="button">Распределить случайно</button>`}</div></div></li>
+    <li class="${cls(3)}"><span class="mk">${3<cur?'✓':3}</span><div class="bd"><h2>Правила</h2>
+      ${S.rulesOk?`<p class="note">Ты: понятно. ${P?pn+': '+(P.rulesOk?'понятно':'читает'):''} · <button class="linkbtn" id="rulesAgain" type="button">Перечитать все правила</button></p>`:`
+      <ol class="rules5">
+        <li><b>Ты играешь персонажа.</b> Добивайся лучшего результата для него, а не «красиво договориться».</li>
+        <li><b>Скрытая информация — твой ресурс.</b> Держи, раскрывай, меняй на уступки. Врать о фактах с карточки нельзя, уходить от ответа можно.</li>
+        <li><b>Ограничения кейса не обходятся.</b> Детали придумывать можно, но не такие, что решают спор в твою пользу. Такую деталь собеседник может оспорить.</li>
+        <li><b>Итог — конкретика:</b> кто, что, когда, на каких условиях и что при нарушении. Или честное «не договорились».</li>
+        <li><b>Дави и хитри сколько угодно,</b> но не переходи на личности. Отношения персонажей тоже оцениваются.</li>
+      </ol>
+      <div class="row"><button class="btn primary" id="rulesOk" type="button">Понятно</button><button class="linkbtn" id="rulesAgain" type="button">Все правила подробно</button></div>`}</div></li>
+    <li class="${cur===4?'cur':'todo'}"><span class="mk">4</span><div class="bd"><h2>Связь и старт</h2>
+      <p class="note" id="mediaState"></p>
+      <div class="startbar"><button class="btn primary" id="start" type="button" ${can?'':'disabled'}>Начать подготовку</button>
+        <span class="note">${can?'Нажать может любой из вас.':'Осталось: '+missing.join(', ')+'.'}</span></div></div></li>
+  </ol>
+  <details class="ctx" open><summary>Ситуация — её знают оба</summary><div class="in">
+    ${st.case.context.map(p=>'<p>'+esc(p)+'</p>').join('')}<span class="eyebrow" style="margin-top:6px">Ограничения</span><ul>${st.case.constraints.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div></details>
+  <button class="linkbtn" id="leave" type="button" style="align-self:flex-start">Выйти из комнаты</button>
 </section>`}
 
 function prepScreen(){const p=Object.assign({},st.prep[me()]||{},draft().prep);return `<section class="stack lg">
-  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}» · ${st.case.dur.prep} минут</span><h1>Подготовка</h1><p class="lead">Прочитай карточку и ответь себе на три вопроса. Лучше выключить микрофон: это время подумать молча. Ответы собеседник увидит только на разборе.</p></div>
+  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}» · ${st.case.dur.prep} минут</span><h1>Подготовка</h1><p class="lead">Молча, каждый со своей карточкой. Микрофон можно выключить.</p></div>
+  ${guide(['Прочитай свою карточку. Скрытая информация — твой главный ресурс: реши, что, когда и в обмен на что раскрыть.','Ответь себе на три вопроса ниже. Их увидит собеседник, но только на разборе.','Нажми «Готов». Если время вышло, начать можно и без этого.'],'Дальше: переговоры по видео. Карточку собеседника ты не увидишь до разбора, он твою тоже.')}
   ${ctxHTML(false)}
   ${cardHTML(me(),{maskable:true})}
   <div class="panel stack"><h2>Три вопроса к себе</h2>
@@ -499,14 +638,15 @@ function prepScreen(){const p=Object.assign({},st.prep[me()]||{},draft().prep);r
 
 function talkScreen(){const p=st.prep[me()]||{},d=draft();const notes=d.notes!=null?d.notes:(st.notes[me()]||'');return `<section class="stack lg">
   <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}» · ${st.case.dur.talk} минут</span><h1>Переговоры</h1><p class="lead">Говорите по видео, договорённость пишете ниже. Поля общие: собеседник видит правки сразу.</p></div>
+  ${guide(['Говорите голосом. Твоя карточка — во вкладке ниже, собеседник её не видит.','Записывайте договорённость в общие поля: кто, когда, на каких условиях, что при нарушении.','Закройте сделку: оба нажимаете «Подписать». Или оба — «Не договорились».'],'Любая правка текста снимает подписи. Придуманную собеседником деталь можно оспорить внизу страницы.')}
   <div class="stack">
     <div class="tabs" role="tablist">
-      <button type="button" data-ct="card" aria-selected="${cardTab==='card'}">Моя карточка</button>
+      <button type="button" data-ct="card" aria-selected="${cardTab==='card'}">Шпаргалка</button>
       <button type="button" data-ct="ctx" aria-selected="${cardTab==='ctx'}">Контекст</button>
       <button type="button" data-ct="notes" aria-selected="${cardTab==='notes'}">Заметки</button>
       <button type="button" data-ct="hide" aria-selected="${cardTab==='hide'}">Свернуть</button>
     </div>
-    ${cardTab==='card'?cardHTML(me(),{maskable:true}):cardTab==='ctx'?ctxHTML(true):cardTab==='notes'?`<div class="panel stack">
+    ${cardTab==='card'?cardHTML(me(),{maskable:true,compact:true}):cardTab==='ctx'?ctxHTML(true):cardTab==='notes'?`<div class="panel stack">
       <label class="field"><span>Что я узнал(а) о собеседнике</span><small>Видишь только ты. Откроется обоим на разборе.</small><textarea id="notesIn" maxlength="1500" style="min-height:120px" placeholder="Проговорился, что… Уходит от вопроса про…">${esc(notes)}</textarea></label>
       <dl class="kv">${PREP.map(([k,l])=>`<dt>${l}</dt><dd>${esc(p[k]||'—')}</dd>`).join('')}</dl></div>`:''}
   </div>
@@ -537,6 +677,7 @@ function debriefScreen(){const c=st.case,r=me(),o=them(),deal=st.result==='deal'
   return `<section class="stack lg">
   <div class="result ${deal?'deal':'nodeal'}"><span class="eyebrow">Раунд ${st.round} · «${esc(c.title)}»</span><h1>${deal?'Договорились':'Не договорились'}</h1>
     <p>${deal?`Договорённость подписана обоими. Конкретность: ${filled} из 4 ключевых полей (кто, когда, условия, нарушение).`:esc(c.noDeal)}</p></div>
+  ${guide(['Посмотри карточку собеседника: что он скрывал и чего боялся.','Отметь, что стало с твоей скрытой информацией, и поставь себе оценки.','Обсудите расхождения вслух. Потом можно сыграть реванш с обменом ролей.'],'')}
   ${deal?`<div class="panel stack"><h2>Итоговая договорённость</h2><dl class="kv">${AGR.map(([k,l])=>`<dt>${l}</dt><dd>${esc(st.agr[k]||'—')}</dd>`).join('')}</dl></div>`:''}
   <div class="stack sm"><h2>Карты открыты</h2><p class="note">Теперь видно всё, что было у собеседника.</p></div>
   <div class="grid2">${cardHTML(r,{player:true})}${cardHTML(o,{player:true})}</div>
@@ -548,6 +689,7 @@ function debriefScreen(){const c=st.case,r=me(),o=them(),deal=st.result==='deal'
     ${c.roles[o].hidden.map((h,i)=>`<label class="chk"><input type="checkbox" data-hl="${i}" ${my.hl[i]?'checked':''}><span>${esc(h)}</span></label>`).join('')}
     <p class="note" id="hlNote"></p></div>
   </div>
+  <div class="panel stack"><div class="stack sm"><h2>Очки за партию</h2><p class="note">Считаются из ваших отметок выше и меняются, пока вы их ставите. Секрет засчитывается, когда оба подтвердили: один отметил «выяснил», другой — «вытащили».</p></div><div class="pts" id="ptsBox"></div></div>
   <div class="panel stack"><h2>Что каждый узнал о другом</h2><div class="grid2">${notesBlock}</div></div>
   ${st.disputes.length?`<div class="panel stack"><h2>Спорные детали</h2><div class="disp">${st.disputes.map(d=>dispItem(d,false)).join('')}</div></div>`:''}
   <div class="panel stack"><h2>Подготовка обоих</h2><div class="grid2">
@@ -566,13 +708,16 @@ function debriefScreen(){const c=st.case,r=me(),o=them(),deal=st.result==='deal'
 function updateLive(){
   if(!st){tick();return}
   $('whoAside').innerHTML=whoRows();
+  const B=st.board,bb=$('boardBox');
+  if(B&&B.games&&B.people.length===2){const [x,y]=B.people[0].me?B.people:[B.people[1],B.people[0]];
+    bb.hidden=false;bb.innerHTML=`<span class="eyebrow">Счёт · ${B.games} ${B.games===1?'партия':B.games<5?'партии':'партий'}${st.phase===3?' · идёт подсчёт':''}</span>
+    <div class="line"><span class="nm">${esc(x.name)}</span><span class="sc">${x.total} : ${y.total}</span><span class="nm">${esc(y.name)}</span></div>`}else bb.hidden=true;
+  const pb=$('ptsBox');if(pb&&st.score)pb.innerHTML=[me(),them()].map(r=>{const S=st.score[r];return `<div class="pts-col"><div class="tot"><span class="nm" style="font-weight:600">${esc(nameOf(r))}${r===me()?' · ты':''}</span><b>${S.total}</b></div>
+    ${S.items.map(([l,v])=>`<div class="pts-row"><span>${esc(l)}</span><span>${v>0?'+':''}${v}</span></div>`).join('')}</div>`}).join('');
   const r=me(),o=them(),P=partnerP();
-  if(st.phase===0){
-    const both=!!(st.players.A&&st.players.B);$('start').disabled=!both;
-    $('ck1').classList.toggle('ok',!!(P&&P.online));
-    $('ck2').classList.toggle('ok',!!localStream);
-    $('ck3').classList.toggle('ok',!!(pc&&pc.connectionState==='connected'));
-    $('startNote').textContent=both?'Можно начинать. Кнопку может нажать любой из вас.':'Кнопка станет активной, когда собеседник подключится.';
+  if(st.phase===0&&$('mediaState')){
+    const conn=pc&&pc.connectionState==='connected';
+    $('mediaState').textContent=(localStream?'Камера и микрофон включены — полоска на твоём видео двигается, когда говоришь. ':'Включи камеру и микрофон в блоке видео'+(innerWidth<980?' сверху':' справа')+' — лучше до старта. ')+(P&&P.online?(conn?'Видеосвязь с собеседником есть.':localStream?'Ждём, пока собеседник тоже включит камеру.':''):'');
   }
   if(st.phase===1){
     $('ready').textContent=st.ready[r]?'Я ещё не готов(а)':'Готов(а) к разговору';
@@ -630,16 +775,23 @@ function bind(){
   document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{lobbyTab=b.dataset.lt;joinErr='';render()});
   document.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{cardTab=b.dataset.ct;lastKey='';render()});
   if($('nameIn'))$('nameIn').oninput=e=>{nameDraft=e.target.value};
-  document.querySelectorAll('input[name=case]').forEach(i=>i.onchange=()=>{pickedCase=i.value;const n=CASES.find(c=>c.id===pickedCase).names;const ls=document.querySelectorAll('#roleSeg label');ls[1].lastChild.textContent=n.A;ls[2].lastChild.textContent=n.B});
-  if($('create'))$('create').onclick=()=>{if(!takeName())return;const v=(document.querySelector('input[name=rl]:checked')||{}).value;send({type:'create',caseId:pickedCase,role:v==='R'?null:v})};
+  document.querySelectorAll('input[name=case]').forEach(i=>i.onchange=()=>{pickedCase=i.value});
+  if($('create'))$('create').onclick=()=>{if(!takeName())return;send({type:'create',caseId:pickedCase})};
+  document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>send({type:'pickRole',role:b.dataset.pick}));
+  document.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>send({type:'swapAnswer',v:b.dataset.swap==='1'}));
+  if($('randRoles'))$('randRoles').onclick=()=>send({type:'randomRoles'});
+  if($('rulesOk'))$('rulesOk').onclick=()=>send({type:'rulesOk',v:true});
+  if($('rulesAgain'))$('rulesAgain').onclick=()=>{rules.hidden=false;$('rulesClose').focus()};
+  if($('guidesToggle'))$('guidesToggle').onclick=()=>{guidesOff=!guidesOff;store.set('neg_guides_off',guidesOff?'1':'0');lastKey='';render()};
   if($('join')){const go=()=>{if(!takeName())return;const v=$('codeIn').value.trim();if(!/^\d{4}$/.test(v)){joinErr='Код — это 4 цифры.';render();return}send({type:'join',code:v})};$('join').onclick=go;$('codeIn').onkeydown=e=>{if(e.key==='Enter')go()}}
-  if($('acceptInvite')){const go=()=>{if(!takeName())return;send({type:'join',code:pendingCode});render()};$('acceptInvite').onclick=go;$('nameIn').onkeydown=e=>{if(e.key==='Enter')go()};$('nameIn').focus()}
-  if($('declineInvite'))$('declineInvite').onclick=()=>{pendingCode=null;history.replaceState(null,'','/');render()};
+  if($('acceptInvite')){const go=()=>{if(!takeName())return;joinErr='';send({type:'join',code:pendingCode})};$('acceptInvite').onclick=go;$('nameIn').onkeydown=e=>{if(e.key==='Enter')go()};$('nameIn').focus()}
+  if($('declineInvite'))$('declineInvite').onclick=()=>{pendingCode=null;peekInfo=null;joinErr='';history.replaceState(null,'','/');render()};
   if($('copyLink'))$('copyLink').onclick=()=>copy($('linkIn').value,'Ссылка скопирована',$('linkIn'));
   if($('leave'))$('leave').onclick=leave;
   if($('start'))$('start').onclick=()=>send({type:'start'});
   if($('ready'))$('ready').onclick=()=>send({type:'ready',v:!st.ready[me()]});
   if($('skipPrep'))$('skipPrep').onclick=()=>send({type:'skipPrep'});
+  if($('cardMore'))$('cardMore').onclick=()=>{cardFull=!cardFull;lastKey='';render()};
   if($('maskBtn'))$('maskBtn').onclick=()=>{secretMasked=!secretMasked;lastKey='';render()};
   document.querySelectorAll('[data-prep]').forEach(t=>t.oninput=()=>{const v={};document.querySelectorAll('[data-prep]').forEach(x=>v[x.dataset.prep]=x.value);
     draft().prep=v;saveDrafts();clearTimeout(deb.prep);deb.prep=setTimeout(()=>send({type:'prep',data:v}),300)});
@@ -662,10 +814,11 @@ function summary(){const c=st.case,r=me(),o=them(),L=[];
   L.push(st.result==='deal'?'Итог: договорились':'Итог: не договорились');
   if(st.result==='deal')AGR.forEach(([k,l])=>{if(st.agr[k])L.push(`${l}: ${st.agr[k]}`)});
   if(st.disputes.length)L.push('Спорные детали: '+st.disputes.map(d=>`«${d.text}» (${d.status==='accepted'?'снята':d.status==='rejected'?'спор остался':'без ответа'})`).join('; '));
+  if(st.score)L.push(`Очки: ${nameOf(r)} ${st.score[r].total} / ${nameOf(o)} ${st.score[o].total}`);
   L.push('Самооценка:');CRIT.forEach(([k,l])=>L.push(`  ${l}: ${nameOf(r)} ${(st.review[r].score||{})[k]||'–'} / ${nameOf(o)} ${((st.review[o]||{}).score||{})[k]||'–'}`));
   return L.join('\n')}
 function copy(text,ok,fallbackEl){(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>toast(ok)).catch(()=>{if(fallbackEl){fallbackEl.select();toast('Выдели и скопируй вручную')}else toast('Не удалось скопировать')})}
-function leave(){send({type:'leave'});st=null;lastKey='';cardTab='card';store.del('neg_room');store.del('neg_drafts');drafts={};closePC();history.replaceState(null,'','/');render()}
+function leave(){send({type:'leave'});st=null;pendingCode=null;peekInfo=null;lastKey='';cardTab='card';store.del('neg_room');store.del('neg_drafts');drafts={};closePC();history.replaceState(null,'','/');render()}
 
 let toastT;function toast(t){let el=document.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';el.setAttribute('role','status');document.body.appendChild(el)}
   el.hidden=false;el.textContent=t;el.style.animation='none';void el.offsetWidth;el.style.animation='';clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,3200)}
@@ -689,7 +842,7 @@ function syncCall(){
   paintTiles();
 }
 function createPC(){
-  const p=new RTCPeerConnection({iceServers:ICE});pc=p;p._polite=me()==='B';
+  const p=new RTCPeerConnection({iceServers:ICE});pc=p;p._polite=!!st.polite;
   p.ontrack=e=>{if(p!==pc)return;remoteStream=e.streams[0]||remoteStream||new MediaStream();if(!e.streams[0])remoteStream.addTrack(e.track);
     vThem.srcObject=remoteStream;vThem.play().catch(()=>{});
     e.track.onunmute=paintTiles;e.track.onmute=paintTiles;e.track.onended=paintTiles;
@@ -734,13 +887,13 @@ document.addEventListener('click',()=>{if(actx&&actx.state==='suspended')actx.re
 function toggle(kind){if(!localStream)return;localStream.getTracks().filter(t=>t.kind===kind).forEach(t=>t.enabled=!t.enabled);paintTiles()}
 function paintTiles(){
   if(!st)return;
-  const o=them(),P=st.players[o];
+  const P=st.partner;
   const init=s=>(s||'?').trim().slice(0,1).toUpperCase()||'?';
   const myVid=!!(localStream&&localStream.getVideoTracks().some(t=>t.enabled&&t.readyState==='live'));
   const myMic=!!(localStream&&localStream.getAudioTracks().some(t=>t.enabled));
   $('phMe').hidden=myVid;$('phMe').firstElementChild.textContent=init(myName);
   $('nmMe').textContent=myName+' · ты';
-  $('stMe').hidden=!!(localStream&&myMic);$('stMe').textContent=localStream?'микрофон выкл':'не подключены';
+  $('stMe').hidden=!!(localStream&&myMic);$('stMe').textContent=localStream?'микрофон выкл':'без камеры';
   $('mMe').hidden=!myMic;
   const theirVid=!!(remoteStream&&remoteStream.getVideoTracks().some(t=>t.readyState==='live'&&!t.muted));
   $('phThem').hidden=theirVid;$('phThem').firstElementChild.textContent=P?init(P.name):'?';
