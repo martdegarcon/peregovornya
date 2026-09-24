@@ -1,0 +1,9 @@
+{
+  "name": "peregovorny-stol",
+  "version": "1.0.0",
+  "description": "Переговорные кейсы вдвоём: комнаты, карточки ролей, таймеры, видеосвязь",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "ws": "^8.18.0" }
+}
