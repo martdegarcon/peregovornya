@@ -4,191 +4,304 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Переговорный стол</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316181D'/%3E%3Ccircle cx='11' cy='16' r='5' fill='%23D6405A'/%3E%3Ccircle cx='21' cy='16' r='5' fill='%232E62D0'/%3E%3C/svg%3E">
+<meta name="description" content="Переговорные кейсы вдвоём: комната по ссылке, карточки ролей со скрытой информацией, видеосвязь, договорённость и разбор.">
+<meta name="theme-color" content="#faf9f5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23141413'/%3E%3Ccircle cx='12.5' cy='16' r='6' fill='%23faf9f5'/%3E%3Ccircle cx='19.5' cy='16' r='5.2' fill='none' stroke='%23faf9f5' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
-
+/* ---------- tokens ---------- */
 :root{
-  --bg:#EEF0F3;--surface:#FFFFFF;--surface2:#F6F7F9;--ink:#16181D;--muted:#5E6572;--line:#D6DAE1;
-  --a:#D6405A;--b:#2E62D0;--role:var(--ink);
-  --seal-bg:#FFF3C7;--seal-ink:#7A5700;--seal-line:#EBCB6B;
-  --ok:#1F8A55;--bad:#C23B2A;--warn:#B7791F;
-  --display:"Unbounded","Arial Black",system-ui,sans-serif;
-  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bg:#faf9f5;--card:#fffefb;--field:#f2f0e9;
+  --ink:#141413;--ink-2:#3d3d3a;--muted:#6b6a65;
+  --line:rgba(20,20,19,.12);--line-2:rgba(20,20,19,.26);
+  --inv:#141413;--on-inv:#faf9f5;--inv-muted:rgba(250,249,245,.64);--inv-line:rgba(250,249,245,.16);
+  --ok:#2f7d4f;--bad:#b3412e;--warn:#9a6a12;
+  --sans:"Onest",Arial,system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r-sm:8px;--r-md:16px;--r-lg:24px;
+  --shadow:rgba(0,0,0,.01) 0 2px 2px 0,rgba(0,0,0,.02) 0 4px 4px 0,rgba(0,0,0,.04) 0 16px 24px 0;
+  --fast:100ms;--base:200ms;--ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  color-scheme:dark;--bg:#111318;--surface:#1A1D24;--surface2:#20242C;--ink:#E8EAEE;--muted:#9AA1AD;--line:#2E333D;
-  --a:#F0667E;--b:#7098F2;--seal-bg:#342B0E;--seal-ink:#F3CE5E;--seal-line:#5C4A12;--ok:#4CC486;--bad:#F07462;--warn:#E3A948;}}
-:root[data-theme="dark"]{
-  color-scheme:dark;--bg:#111318;--surface:#1A1D24;--surface2:#20242C;--ink:#E8EAEE;--muted:#9AA1AD;--line:#2E333D;
-  --a:#F0667E;--b:#7098F2;--seal-bg:#342B0E;--seal-ink:#F3CE5E;--seal-line:#5C4A12;--ok:#4CC486;--bad:#F07462;--warn:#E3A948;}
-body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);padding-inline:16px;padding-block:0 48px}
-body[data-role="A"]{--role:var(--a)} body[data-role="B"]{--role:var(--b)}
-*{box-sizing:border-box} [hidden]{display:none!important}
-.wrap{max-width:760px;margin:0 auto}
-h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
-h1{font-size:clamp(24px,5vw,34px);line-height:1.1}
-h2{font-size:18px;line-height:1.25}
-h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--body);font-weight:600;color:var(--muted)}
-p{margin:0}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid var(--role);outline-offset:2px}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141413;--card:#1b1b19;--field:#232321;
+  --ink:#faf9f5;--ink-2:#dcdad2;--muted:#9d9b93;
+  --line:rgba(250,249,245,.12);--line-2:rgba(250,249,245,.28);
+  --inv:#faf9f5;--on-inv:#141413;--inv-muted:rgba(20,20,19,.64);--inv-line:rgba(20,20,19,.16);
+  --ok:#72c393;--bad:#e8876f;--warn:#e0b04f;
+  --shadow:none;color-scheme:dark;}}
 
-/* top bar */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;border-bottom:1px solid var(--line);margin-bottom:22px}
-.bar-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-family:var(--display);font-size:14px;font-weight:700;margin-right:auto}
-.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:13px;white-space:nowrap}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
-.dot.on{background:var(--ok)} .dot.off{background:var(--bad)}
-.timer{font-family:var(--mono);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
-.timer.late{color:var(--bad)} .timer.soon{color:var(--warn)}
-.steps{display:flex;gap:4px;margin-top:10px}
-.steps span{flex:1;height:4px;border-radius:2px;background:var(--line)}
-.steps span.done{background:var(--role)}
-.steplbl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
-.steplbl b{color:var(--ink);font-weight:600}
-.linkbtn{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:13px}
-
-/* blocks */
-.stack{display:flex;flex-direction:column;gap:18px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.lead{color:var(--muted);max-width:62ch}
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 16px;font-weight:600}
-.btn.primary{background:var(--role);border-color:var(--role);color:#fff}
-body:not([data-role]) .btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.btn.ghost{background:transparent}
-.btn.danger{color:var(--bad)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
-label.f small{color:var(--muted);font-weight:400}
-input[type=text],select,textarea{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-textarea{resize:vertical;min-height:64px}
-.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;font-size:14px;border-right:1px solid var(--line)}
-.seg label:last-child{border-right:0}
-.seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label:has(input:checked){background:var(--ink);color:var(--bg);font-weight:600}
-.code{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:.18em}
-.note{font-size:13px;color:var(--muted)}
-.warnbox{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted)}
-
-/* role card */
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.card-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.card-head .tag{font-family:var(--mono);font-size:12px;color:#fff;border-radius:6px;padding:2px 7px}
-.card[data-r="A"] .tag{background:var(--a)} .card[data-r="B"] .tag{background:var(--b)}
-.card[data-r="A"]{border-top:4px solid var(--a)} .card[data-r="B"]{border-top:4px solid var(--b)}
-.card-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px}
-.card ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
-.want{font-size:16px;font-weight:500}
-.seal{background:var(--seal-bg);color:var(--seal-ink);border-top:1px dashed var(--seal-line);padding:16px 20px}
-.seal h3{color:var(--seal-ink)}
-.seal li{color:var(--ink)}
-details.ctx{background:var(--surface);border:1px solid var(--line);border-radius:14px}
-details.ctx summary{padding:14px 20px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
-details.ctx summary::after{content:"＋";color:var(--muted)}
-details.ctx[open] summary::after{content:"－"}
-details.ctx .in{padding:0 20px 18px;display:flex;flex-direction:column;gap:10px;max-width:68ch}
-.tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px}
-.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-
-/* partner status */
-.who{display:flex;gap:10px;flex-wrap:wrap}
-.who .pill b{font-weight:600}
-.st-ok{color:var(--ok)} .st-bad{color:var(--bad)} .st-mut{color:var(--muted)}
-
-/* agreement */
-.agr{display:flex;flex-direction:column;gap:12px}
-.sig{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding-top:6px;border-top:1px solid var(--line)}
-
-/* debrief */
-.banner{border-radius:14px;padding:20px;color:#fff}
-.banner.deal{background:#1D7A4B} .banner.nodeal{background:#B03A2A}
-.banner p{opacity:.92;margin-top:6px;max-width:62ch}
-.kv{display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:6px 14px;font-size:14px}
-.kv dt{color:var(--muted)} .kv dd{margin:0;white-space:pre-wrap}
-.score{display:grid;grid-template-columns:1fr auto auto;gap:8px 14px;align-items:center;font-size:14px}
-.score .hd{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.score select{width:auto;padding:6px 8px}
-.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:center;min-width:36px}
-.chk{display:flex;gap:8px;align-items:flex-start;font-size:14px}
-.chk input{margin-top:4px}
-
-/* rules overlay */
-.ov{position:fixed;inset:0;background:rgba(10,12,16,.55);z-index:20;display:flex;justify-content:flex-end}
-.ov .sheet{background:var(--surface);width:min(560px,100%);height:100%;overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) 22px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
-.sheet h3{margin-top:6px}
-.sheet ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
-@media (prefers-reduced-motion:no-preference){.panel,.card{animation:rise .25s ease-out both}@keyframes rise{from{transform:translateY(4px)}to{transform:none}}}
-
+*{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{margin:0}
-/* video */
-.call{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{position:relative;aspect-ratio:4/3;max-width:100%;background:#0E1014;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--sans);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+h1,h2{font-weight:700;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(30px,5vw,44px)}
+h2{font-size:20px;letter-spacing:-.015em}
+.display{font-size:clamp(40px,7.4vw,58px);line-height:1.04}
+.eyebrow{font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.lead{color:var(--ink-2);font-size:17px;line-height:1.5;max-width:58ch}
+.note{font-size:13px;color:var(--muted)}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:var(--r-sm);border:1px solid var(--line-2);background:transparent;font-weight:600;font-size:15px;transition:opacity var(--fast) var(--ease),background var(--fast) var(--ease),transform var(--fast) var(--ease);white-space:nowrap}
+.btn:hover{background:var(--field)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.primary:hover{opacity:.86;background:var(--ink)}
+.btn.ghost{border-color:transparent}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn.danger{color:var(--bad)}
+.btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.btn.wide{width:100%}
+.linkbtn{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>span{font-size:14px;font-weight:600}
+.field small{color:var(--muted);font-size:13px}
+input[type=text],textarea,select{width:100%;background:var(--field);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 13px;min-height:44px;transition:border-color var(--fast) var(--ease),background var(--fast) var(--ease)}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink);background:var(--card)}
+textarea{resize:vertical;min-height:72px;line-height:1.45}
+.seg{display:flex;gap:4px;padding:4px;background:var(--field);border-radius:var(--r-sm)}
+.seg label{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;min-height:38px;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:14px;color:var(--ink-2);transition:background var(--fast) var(--ease)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 0 0 1px var(--line-2)}
+.seg label:has(input:focus-visible){outline:2px solid var(--ink)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 12px 9px;margin-bottom:-1px;font-size:14px;color:var(--muted);font-weight:500}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--ink);font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack.lg{gap:28px}
+.stack.sm{gap:8px}
+
+/* ---------- surfaces ---------- */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:22px;box-shadow:var(--shadow)}
+.panel.flat{box-shadow:none;background:transparent}
+.inv{background:var(--inv);color:var(--on-inv);border-color:var(--inv)}
+.inv .eyebrow,.inv .note{color:var(--inv-muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top-in{max-width:1180px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em;font-size:15px;white-space:nowrap}
+.mark{width:26px;height:26px;flex:none}
+.steps{display:flex;gap:20px;margin:0 auto;font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.steps span{color:var(--muted);padding:6px 0;border-bottom:2px solid transparent}
+.steps span.done{color:var(--ink-2)}
+.steps span.cur{color:var(--ink);border-color:var(--ink)}
+.top-r{display:flex;align-items:center;gap:12px;margin-left:auto}
+.steps~.top-r{margin-left:0}
+.timer{font:700 22px/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em;min-width:76px;text-align:right}
+.timer.soon{color:var(--warn)} .timer.late{color:var(--bad)}
+.conn{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line-2);flex:none}
+.dot.on{background:var(--ok)} .dot.off{background:var(--bad)}
+.step-mini{display:none;font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em}
+@media (max-width:767px){.steps{display:none}.step-mini{display:block}.brand .word{display:none}.conn .conn-t{display:none}}
+
+/* ---------- shell ---------- */
+.shell{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+.shell.room{grid-template-areas:"aside" "main"}
+.shell.room>#aside{grid-area:aside} .shell.room>main{grid-area:main}
+@media (min-width:980px){
+  .shell.room{grid-template-columns:minmax(0,1fr) 340px;grid-template-areas:"main aside";gap:32px}
+  .shell.room>#aside{position:sticky;top:84px;align-self:start}
+}
+main{min-width:0}
+
+/* ---------- video aside ---------- */
+.aside{display:flex;flex-direction:column;gap:12px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (min-width:980px){.tiles{grid-template-columns:1fr}}
+.tile{position:relative;aspect-ratio:4/3;max-width:100%;background:#1f1f1d;border-radius:var(--r-md);overflow:hidden;box-shadow:0 0 0 0 transparent;transition:box-shadow var(--base) var(--ease)}
+@media (min-width:980px){#tileMe{aspect-ratio:16/9}}
+.tile.speaking{box-shadow:0 0 0 3px var(--ink)}
+@media (prefers-color-scheme:dark){.tile{background:#262624}}
 .tile video{width:100%;height:100%;object-fit:cover;display:block}
-.tile .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:28px;color:#fff;background:#1F232B}
-.tile[data-r="A"] .ph{background:linear-gradient(160deg,#3a1d24,#1F232B)} .tile[data-r="B"] .ph{background:linear-gradient(160deg,#1c2640,#1F232B)}
-.tile .lbl{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;border-radius:6px;padding:2px 8px;display:flex;gap:6px;align-items:center}
-.tile .lbl i{font-style:normal;opacity:.75}
-.callbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.callbar .btn{padding:8px 12px;font-size:14px}
-.callbar .btn.off{color:var(--bad)}
-.me-mirror video{transform:scaleX(-1)}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:calc(100% - 32px)}
-.linkrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;width:100%}
+.tile.mirror video{transform:scaleX(-1)}
+.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 34px/1 var(--sans);color:#faf9f5;letter-spacing:-.02em}
+.ph i{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;border:1.5px solid rgba(250,249,245,.4);font-style:normal;font-size:26px}
+.lbl{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:8px;align-items:center;font-size:12px;color:#faf9f5}
+.lbl b{background:rgba(20,20,19,.72);padding:3px 8px;border-radius:6px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lbl em{font-style:normal;background:rgba(20,20,19,.72);padding:3px 8px;border-radius:6px;opacity:.9}
+.meter{position:absolute;right:8px;top:8px;width:4px;height:28px;border-radius:2px;background:rgba(250,249,245,.18);overflow:hidden}
+.meter::after{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--lvl,0)*100%);background:#faf9f5;border-radius:2px}
+.callbar{display:flex;gap:8px;flex-wrap:wrap}
+.callbar .btn{flex:1}
+.aside .who{display:flex;flex-direction:column;gap:6px}
+.aside.collapsed .tiles,.aside.collapsed .callbar,.aside.collapsed #callNote{display:none}
+@media (min-width:980px){#callToggle{display:none}}
+
+/* ---------- people ---------- */
+.person{display:flex;align-items:center;gap:10px;font-size:14px}
+.person .nm{font-weight:600}
+.person .st{color:var(--muted)}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:6px;font:700 11px/1 var(--mono);border:1.5px solid var(--ink)}
+.chip.A{background:var(--ink);color:var(--bg)}
+.chip.B{background:transparent;color:var(--ink)}
+.inv .chip{border-color:var(--on-inv)} .inv .chip.A{background:var(--on-inv);color:var(--inv)} .inv .chip.B{color:var(--on-inv)}
+.st-ok{color:var(--ok)!important} .st-bad{color:var(--bad)!important}
+
+/* ---------- landing ---------- */
+.hero{display:flex;flex-direction:column;gap:18px;padding-block:24px 8px}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;counter-reset:s;list-style:none;margin:0;padding:0}
+.how li{background:var(--bg);padding:18px;display:flex;flex-direction:column;gap:6px;counter-increment:s}
+.how li::before{content:counter(s,decimal-leading-zero);font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.08em}
+.how b{font-weight:600}
+.how span{color:var(--ink-2);font-size:14px}
+.cases{display:grid;gap:10px}
+.case{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:var(--r-md);cursor:pointer;transition:border-color var(--fast) var(--ease),background var(--fast) var(--ease)}
+.case:hover{border-color:var(--line-2)}
+.case:has(input:checked){border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.case input{margin-top:4px;accent-color:var(--ink)}
+.case .t{font-weight:700;font-size:16px;letter-spacing:-.015em}
+.case .m{font:500 12px/1.4 var(--mono);color:var(--muted);margin-top:2px}
+.case .d{font-size:14px;color:var(--ink-2);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.landing{display:grid;gap:40px}
+@media (min-width:980px){.landing{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:start;gap:56px}.landing .form{position:sticky;top:92px}}
+.err{color:var(--bad);font-size:14px}
+
+/* ---------- room ---------- */
+.code{font:700 clamp(44px,9vw,64px)/1 var(--mono);letter-spacing:.14em}
+.linkrow{display:flex;gap:8px;width:100%}
 .linkrow input{flex:1;min-width:0;font-family:var(--mono);font-size:13px}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-2)}
+.checks li::before{content:"";flex:none;width:16px;height:16px;margin-top:2px;border-radius:50%;border:1.5px solid var(--line-2)}
+.checks li.ok::before{background:var(--ink);border-color:var(--ink);box-shadow:inset 0 0 0 3px var(--card)}
+.checks li.ok{color:var(--ink)}
+
+/* ---------- role card ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow)}
+.card-h{padding:20px 22px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-h h2{font-size:24px}
+.card-h .who{margin-left:auto;font-size:13px;color:var(--muted)}
+.card-b{padding:14px 22px 22px;display:flex;flex-direction:column;gap:16px}
+.want{font-size:18px;font-weight:500;line-height:1.35;letter-spacing:-.015em}
+.card ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:4px;color:var(--ink-2)}
+.card ul li::marker{color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.secret{background:var(--inv);color:var(--on-inv);padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.secret .eyebrow{color:var(--inv-muted);display:flex;gap:8px;align-items:center}
+.secret ul{color:var(--on-inv)}
+.secret ul li::marker{color:var(--inv-muted)}
+.secret-toggle{align-self:flex-start;background:none;border:1px solid var(--inv-line);color:var(--on-inv);border-radius:6px;padding:4px 10px;font-size:12px}
+.secret.masked ul{filter:blur(7px);user-select:none;pointer-events:none}
+details.ctx{border:1px solid var(--line);border-radius:var(--r-md);background:var(--card)}
+details.ctx summary{padding:16px 22px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.ctx summary::-webkit-details-marker{display:none}
+details.ctx summary::after{content:"+";font:500 18px/1 var(--mono);color:var(--muted)}
+details.ctx[open] summary::after{content:"−"}
+details.ctx .in{padding:0 22px 22px;display:flex;flex-direction:column;gap:10px;max-width:70ch;color:var(--ink-2)}
+details.ctx ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+
+/* ---------- agreement ---------- */
+.agr-f{display:flex;flex-direction:column;gap:6px}
+.agr-f .lbl-row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.agr-f .lbl-row span:first-child{font-size:14px;font-weight:600}
+.agr-f .by{font:500 11px/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lint{font-size:13px;color:var(--warn)}
+.concrete{display:flex;gap:6px;flex-wrap:wrap}
+.concrete span{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--mono);padding:6px 9px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+.concrete span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--line-2)}
+.concrete span.ok{color:var(--ink);border-color:var(--line-2)}
+.concrete span.ok::before{background:var(--ink)}
+.signbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line)}
+.sigs{display:flex;gap:14px;flex-wrap:wrap;font-size:14px}
+.sigs span{display:flex;gap:6px;align-items:center}
+.disp{display:flex;flex-direction:column;gap:10px}
+.disp-item{border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.disp-item q{font-weight:500}
+.disp-item .meta{font:500 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- debrief ---------- */
+.result{border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:10px}
+.result.deal{background:var(--inv);color:var(--on-inv)}
+.result.deal .eyebrow{color:var(--inv-muted)}
+.result.nodeal{border:2px solid var(--ink)}
+.result p{max-width:62ch;font-size:16px}
+.kv{display:grid;grid-template-columns:minmax(120px,180px) 1fr;gap:10px 18px;margin:0;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;white-space:pre-wrap}
+@media (max-width:520px){.kv{grid-template-columns:1fr;gap:2px}.kv dd{margin-bottom:10px}}
+.score{display:grid;grid-template-columns:1fr 84px 84px;gap:10px 14px;align-items:center;font-size:14px}
+.score .hd{font:500 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score .hd:first-child{text-align:left}
+.score select{padding:8px;min-height:40px}
+.score .num{text-align:center;font:600 15px/1 var(--mono)}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.chk input{margin-top:3px;accent-color:var(--ink);width:16px;height:16px;flex:none}
+.seg.three label{font-size:13px}
+
+/* ---------- overlay / toast ---------- */
+.ov{position:fixed;inset:0;background:rgba(20,20,19,.4);z-index:40;display:flex;justify-content:flex-end}
+.sheet{background:var(--bg);width:min(560px,100%);height:100%;overflow:auto;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(32px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.sheet h3{font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:10px}
+.sheet ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.sheet p,.sheet li{color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--inv);color:var(--on-inv);padding:12px 18px;border-radius:var(--r-sm);font-size:14px;z-index:50;max-width:calc(100% - 32px);box-shadow:var(--shadow)}
+@media (prefers-reduced-motion:no-preference){
+  .enter{animation:enter var(--base) var(--ease) both}
+  @keyframes enter{from{transform:translateY(6px)}to{transform:none}}
+  .toast{animation:toastIn var(--base) var(--ease) both}
+  @keyframes toastIn{from{transform:translate(-50%,6px)}to{transform:translate(-50%,0)}}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="bar">
-    <div class="bar-row">
-      <span class="brand">Переговорный стол</span>
-      <span class="pill" id="conn"><span class="dot"></span><span>подключение…</span></span>
-      <button class="linkbtn" id="rulesBtn" type="button">Правила</button>
-      <span class="timer" id="timer" hidden>05:00</span>
-    </div>
-    <div class="steps" id="steps"><span></span><span></span><span></span><span></span></div>
-    <div class="steplbl" id="steplbl"><span>Комната</span><span>Подготовка</span><span>Переговоры</span><span>Разбор</span></div>
-  </header>
+<header class="top"><div class="top-in">
+  <span class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><circle cx="12.5" cy="16" r="6" fill="var(--bg)"/><circle cx="19.5" cy="16" r="5.2" fill="none" stroke="var(--bg)" stroke-width="1.6"/></svg><span class="word">Переговорный стол</span></span>
+  <nav class="steps" id="steps" aria-label="Этапы" hidden><span>Комната</span><span>Подготовка</span><span>Переговоры</span><span>Разбор</span></nav>
+  <div class="top-r">
+    <span class="step-mini" id="stepMini"></span>
+    <span class="timer" id="timer" hidden aria-live="off">05:00</span>
+    <span class="conn" id="conn"><i class="dot"></i><span class="conn-t">подключение…</span></span>
+    <button class="btn ghost sm" id="rulesBtn" type="button">Правила</button>
+  </div>
+</div></header>
 
-  <section id="callWrap" class="panel" hidden style="margin-bottom:18px">
-    <div class="call">
-      <div class="tile me-mirror" id="tileMe"><video id="vMe" autoplay playsinline muted></video><div class="ph" id="phMe">?</div><span class="lbl" id="lblMe"></span></div>
-      <div class="tile" id="tileThem"><video id="vThem" autoplay playsinline></video><div class="ph" id="phThem">?</div><span class="lbl" id="lblThem"></span></div>
+<div class="shell" id="shell">
+  <aside class="aside" id="aside" hidden aria-label="Видеосвязь">
+    <div class="tiles">
+      <div class="tile" id="tileThem"><video id="vThem" autoplay playsinline></video><div class="ph" id="phThem"><i>?</i></div><span class="meter" id="mThem"></span><span class="lbl"><b id="nmThem"></b><em id="stThem" hidden></em></span></div>
+      <div class="tile mirror" id="tileMe"><video id="vMe" autoplay playsinline muted></video><div class="ph" id="phMe"><i>?</i></div><span class="meter" id="mMe"></span><span class="lbl"><b id="nmMe"></b><em id="stMe" hidden></em></span></div>
     </div>
     <div class="callbar">
       <button class="btn primary" id="mediaOn" type="button">Включить камеру и микрофон</button>
-      <button class="btn" id="micBtn" type="button" hidden>Микрофон вкл</button>
-      <button class="btn" id="camBtn" type="button" hidden>Камера вкл</button>
-      <button class="btn ghost" id="callHide" type="button">Свернуть видео</button>
+      <button class="btn" id="micBtn" type="button" hidden>Микрофон</button>
+      <button class="btn" id="camBtn" type="button" hidden>Камера</button>
     </div>
-    <p class="note" id="callNote" style="margin-top:8px"></p>
-  </section>
-
-  <main id="app" class="stack"></main>
+    <p class="note" id="callNote" hidden></p>
+    <div class="row between">
+      <div class="who" id="whoAside"></div>
+      <button class="linkbtn" id="callToggle" type="button">Свернуть видео</button>
+    </div>
+  </aside>
+  <main id="app"></main>
 </div>
 
 <div class="ov" id="rules" hidden>
-  <div class="sheet" role="dialog" aria-label="Правила">
-    <div class="row" style="justify-content:space-between"><h2>Правила</h2><button class="btn ghost" id="rulesClose" type="button">Закрыть</button></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <div class="row between"><h2 id="rulesTitle">Правила</h2><button class="btn sm" id="rulesClose" type="button">Закрыть</button></div>
     <p>Вы играете персонажа, а не себя. Задача — максимально выгодный для него результат в рамках ситуации. Можно давить, торговаться, хитрить, отказываться и задавать неудобные вопросы.</p>
     <h3>Подготовка · 5 минут</h3>
     <ul><li>Без чего я точно не уйду?</li><li>Что готов отдать взамен на что-то важное?</li><li>Что будет, если мы вообще не договоримся?</li></ul>
     <h3>Ограничения</h3>
-    <p>Правила самого кейса. Обходить нельзя. «Тогда давай разведёмся» — не сильный ход, а выход из ситуации.</p>
+    <p>Правила самого кейса, обходить их нельзя. «Тогда давай разведёмся» — не сильный ход, а выход из ситуации.</p>
     <h3>Скрытая информация</h3>
     <ul><li>Можно держать при себе, раскрыть в нужный момент, обменять на уступку, использовать как рычаг.</li><li>Нельзя прямо врать о фактах с карточки. Можно уйти от ответа, ответить частично, перевести тему.</li><li>У собеседника тоже есть скрытая информация. Не нашли — ваша проблема.</li></ul>
     <h3>Придуманные детали</h3>
-    <p>Можно добавлять детали, которые не меняют ситуацию («вчера мама сказала…»). Нельзя придумывать обстоятельства, решающие проблему в вашу пользу («мне внезапно дали миллион»). Спор о детали решаете вдвоём; не сошлись — деталь не считается.</p>
+    <p>Можно добавлять детали, которые не меняют ситуацию. Нельзя придумывать обстоятельства, решающие проблему в вашу пользу. Ведущего нет: сомнительную деталь можно оспорить кнопкой «Оспорить деталь». Автор либо снимает её, либо спор фиксируется и разбирается в конце.</p>
     <h3>Поведение</h3>
     <p>Персонаж может злиться, давить, обижаться, манипулировать. Собеседник может это распознавать и называть. На личности не переходить.</p>
     <h3>Итог · 10–15 минут разговора</h3>
@@ -199,214 +312,303 @@ body{margin:0}
   </div>
 </div>
 
-
-
 <script>
-/* ---------- constants ---------- */
-const CRIT=[['prio','Защитил свои приоритеты'],['gain','Выгодность договорённости'],['conc','Конкретность и реализм'],['hid','Как использовал скрытую инфу'],['dig','Сколько вытащил из собеседника'],['rel','Отношения персонажей']];
-const AGR=[['who','Кто что делает','Лёша: ванная и спальня. Коридор — …'],['when','Когда','Потолок в ванной — до …'],['terms','На каких условиях','Бюджет, кто платит, кто участвует в выборе…'],['breach','Если договорённость нарушена','Что происходит автоматически'],['extra','Что ещё','Признание, проверки прогресса, ритуалы…']];
-const PREP=[['must','Без чего я точно не уйду?'],['give','Что готов отдать взамен?'],['batna','Что будет, если не договоримся?']];
+/* ============ constants ============ */
+const CRIT=[['prio','Защитил(а) свои приоритеты'],['gain','Выгодность договорённости'],['conc','Конкретность и реализм'],['hid','Работа со скрытой информацией'],['dig','Сколько вытащил(а) из собеседника'],['rel','Отношения персонажей после разговора']];
+const AGR=[['who','Кто что делает','Например: Лёша доделывает ванную и спальню сам'],['when','Когда','Например: потолок в ванной — до 15 октября'],['terms','На каких условиях','Бюджет, кто платит, кто участвует в выборе'],['breach','Если договорённость нарушена','Что происходит автоматически, без нового скандала'],['extra','Что ещё','Признание, проверки прогресса, ритуалы']];
+const KEY4=[['who','Кто'],['when','Когда'],['terms','Условия'],['breach','Нарушение']];
+const PREP=[['must','Без чего я точно не уйду?'],['give','Что готов(а) отдать взамен?'],['batna','Что будет, если не договоримся?']];
+const VAGUE=/(постара|подума|посмотрим|попробу|по возможности|как.?нибудь|когда.?нибудь|в ближайшее время|обсудим|потом решим|как получится|если получится|по ходу)/i;
+const DATEISH=/(\d|понедельн|вторник|сред|четверг|пятниц|суббот|воскрес|недел|месяц|январ|феврал|март|апрел|ма[йя]|июн|июл|август|сентябр|октябр|ноябр|декабр|завтра|сегодня|выходн|день|дня|дней)/i;
 const other=r=>r==='A'?'B':'A';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=id=>document.getElementById(id);
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
-/* ---------- local state ---------- */
-let clientId=store.get('neg_id'); if(!clientId){clientId=Math.random().toString(36).slice(2)+Date.now().toString(36);store.set('neg_id',clientId)}
-let myName=store.get('neg_name')||'';
-let CASES=[], ICE=[{urls:'stun:stun.l.google.com:19302'}];
-let st=null, skew=0, lastKey='', lobbyTab='create', cardTab='me', joinErr='', callHidden=false;
+/* ============ local state ============ */
+let clientId=store.get('neg_id');if(!clientId){clientId=Math.random().toString(36).slice(2)+Date.now().toString(36);store.set('neg_id',clientId)}
+let myName=store.get('neg_name')||'',nameDraft=null;
+let CASES=[],ICE=[{urls:'stun:stun.l.google.com:19302'}];
+let st=null,skew=0,lastKey='',lobbyTab='create',cardTab='card',joinErr='',pickedCase=null,secretMasked=false;
 let pendingCode=(location.pathname.match(/^\/r\/(\d{4})$/)||[])[1]||null;
-let prepDraft={}; try{prepDraft=JSON.parse(store.get('neg_prep')||'{}')}catch(e){}
+let drafts={};try{drafts=JSON.parse(store.get('neg_drafts')||'{}')}catch(e){}
+const dkey=()=>st?st.code+':'+st.round:'';
+function draft(){return drafts[dkey()]||(drafts[dkey()]={prep:{},notes:null})}
+function saveDrafts(){const k=dkey();store.set('neg_drafts',JSON.stringify(k?{[k]:drafts[k]}:{}))}
 
-/* ---------- socket ---------- */
-let ws=null, wsOpen=false, retry=0;
+/* ============ socket ============ */
+let ws=null,wsOpen=false,retry=0;
 function connect(){
   ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host);
   ws.onopen=()=>{wsOpen=true;retry=0;setConn('on','онлайн');
-    if(myName)send({type:'id',clientId,name:myName});
-    const code=st?st.code:(store.get('neg_room')||null);
-    if(myName&&code)send({type:'join',code});
-    else if(myName&&pendingCode){send({type:'join',code:pendingCode});}
+    if(myName){send({type:'id',clientId,name:myName});
+      const code=st?st.code:(pendingCode||store.get('neg_room'));
+      if(code&&(st||store.get('neg_room')||pendingCode))send({type:'join',code});}
+    if(!st)render();
   };
   ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(_){return}onMsg(m)};
   ws.onclose=()=>{wsOpen=false;setConn('wait','переподключение…');closePC();setTimeout(connect,Math.min(8000,500*2**retry++))};
 }
 function send(m){if(ws&&wsOpen)ws.send(JSON.stringify(m))}
 function onMsg(m){
-  if(m.type==='hello'){CASES=m.cases;ICE=m.ice||ICE;if(!st)render();return}
-  if(m.type==='error'){joinErr=m.msg;store.del('neg_room');pendingCode=null;if(st){st=null}render();return}
+  if(m.type==='hello'){CASES=m.cases;ICE=m.ice||ICE;if(!pickedCase&&CASES[0])pickedCase=CASES[0].id;if(!st)render();return}
+  if(m.type==='error'){joinErr=m.msg;store.del('neg_room');if(pendingCode){lobbyTab='join'}pendingCode=null;st=null;history.replaceState(null,'','/');render();return}
   if(m.type==='kicked'){st=null;store.del('neg_room');toast(m.msg);render();return}
   if(m.type==='rtc'){onRtc(m);return}
   if(m.type==='state'){
-    const first=!st; st=m; skew=m.now-Date.now(); joinErr=''; pendingCode=null;
+    const prev=st;st=m;skew=m.now-Date.now();joinErr='';pendingCode=null;
     store.set('neg_room',m.code);
     if(location.pathname!=='/r/'+m.code)history.replaceState(null,'','/r/'+m.code);
-    if(first&&m.phase<=2&&prepDraft.code===m.code){/* keep draft */}
-    const key=[m.phase,m.me,m.code,!!partnerP()].join('|');
+    if(prev&&prev.round!==m.round){toast('Реванш: вы поменялись ролями');cardTab='card';secretMasked=false}
+    if(prev&&prev.phase!==m.phase)onPhaseChange(m.phase);
+    const key=[m.phase,m.me,m.code,m.round,!!partnerP(),cardTab].join('|');
     if(key!==lastKey){lastKey=key;render()}else updateLive();
     syncCall();
   }
 }
-const me=()=>st&&st.me, them=()=>st&&other(st.me);
-function partnerP(){return st&&st.players[other(st.me)]}
-function nameOf(r){const p=st&&st.players[r];return p?p.name:(st?st.case.names[r]:'')}
+function onPhaseChange(p){
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(p===2)toast('Время переговоров. Таймер пошёл');
+  if(p===3)toast(st.result==='deal'?'Сделка закрыта. Карты открыты':'Не договорились. Карты открыты');
+}
+const me=()=>st&&st.me,them=()=>st&&other(st.me);
+function partnerP(){return st&&st.players[them()]}
+function nameOf(r){const p=st&&st.players[r];return p?p.name:'—'}
+function roleName(r){return st.case.names[r]}
 
-/* ---------- render ---------- */
-const app=$('app');
+/* ============ render ============ */
+const app=$('app'),shell=$('shell'),aside=$('aside');
 function render(){
-  const role=st?st.me:null;
-  if(role)document.body.dataset.role=role;else delete document.body.dataset.role;
-  const ph=st?st.phase:0;
-  [...document.querySelectorAll('#steps span')].forEach((s,i)=>s.classList.toggle('done',!!st&&i<=ph));
-  [...document.querySelectorAll('#steplbl span')].forEach((s,i)=>s.innerHTML=i===ph?'<b>'+s.textContent+'</b>':s.textContent);
-  $('callWrap').hidden=!st||callHidden;
-  if(window.showCall)showCall.hidden=!st||!callHidden;
-  if(!myName)app.innerHTML=nameScreen();
-  else if(!st)app.innerHTML=lobbyScreen();
+  const inRoom=!!st;
+  shell.classList.toggle('room',inRoom);aside.hidden=!inRoom;
+  const ph=inRoom?st.phase:-1;
+  $('steps').hidden=!inRoom;
+  [...$('steps').children].forEach((s,i)=>{s.className=i===ph?'cur':i<ph?'done':''});
+  $('stepMini').textContent=inRoom?`${ph+1}/4 · ${['Комната','Подготовка','Переговоры','Разбор'][ph]}`:'';
+  if(!inRoom)app.innerHTML=pendingCode&&!myName?inviteScreen():pendingCode?`<div class="panel">Подключаемся к комнате ${esc(pendingCode)}…</div>`:landing();
   else app.innerHTML=[roomScreen,prepScreen,talkScreen,debriefScreen][st.phase]();
-  bind(); updateLive();
+  app.firstElementChild&&app.firstElementChild.classList.add('enter');
+  bind();updateLive();paintTiles();
 }
 
-function nameScreen(){return `<section class="stack">
-  <div class="stack" style="gap:10px"><h1>Переговоры один на один</h1>
-  <p class="lead">Два игрока, у каждого своя карточка роли со скрытой информацией. 5 минут на подготовку, 15 на разговор по видео, в конце договорённость или её отсутствие и разбор.</p></div>
-  <div class="panel stack"><label class="f">Как тебя зовут?<input type="text" id="nameIn" maxlength="40" autocomplete="name" placeholder="Имя"></label>
-  <div class="row"><button class="btn primary" id="nameGo" type="button">Дальше</button></div></div>
-  </section>`}
+/* ---------- screens ---------- */
+function nameField(){return `<label class="field"><span>Как тебя зовут?</span><input type="text" id="nameIn" maxlength="40" autocomplete="given-name" placeholder="Имя, которое увидит собеседник" value="${esc(nameDraft??myName)}"></label>`}
 
-function lobbyScreen(){
-  if(pendingCode&&!joinErr)return `<section class="stack"><div class="panel"><p>Подключаемся к комнате ${esc(pendingCode)}…</p></div></section>`;
-  const c0=CASES[0]||{names:{A:'Роль A',B:'Роль B'}};
-  return `<section class="stack">
-  <div class="stack" style="gap:8px"><h1>Привет, ${esc(myName)}</h1><p class="lead">Создай комнату и отправь ссылку собеседнику или введи код, который прислали тебе. <button class="linkbtn" id="rename" type="button">Сменить имя</button></p></div>
-  ${joinErr?`<div class="warnbox" style="color:var(--bad)">${esc(joinErr)}</div>`:''}
-  <div class="tabs" role="tablist"><button type="button" data-lt="create" aria-selected="${lobbyTab==='create'}">Создать комнату</button><button type="button" data-lt="join" aria-selected="${lobbyTab==='join'}">Войти по коду</button></div>
-  ${lobbyTab==='create'?`<div class="panel stack">
-    <label class="f">Кейс<select id="caseSel">${CASES.map(c=>`<option value="${esc(c.id)}">${esc(c.title)} — ${esc(c.names.A)} и ${esc(c.names.B)}</option>`).join('')}</select></label>
-    <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500">Моя роль
-      <div class="seg" id="roleSeg">
-        <label><input type="radio" name="rl" value="A"><span id="rnA">${esc(c0.names.A)}</span></label>
-        <label><input type="radio" name="rl" value="B"><span id="rnB">${esc(c0.names.B)}</span></label>
+function landing(){
+  const cs=CASES.map(c=>`<label class="case"><input type="radio" name="case" value="${esc(c.id)}" ${c.id===pickedCase?'checked':''}>
+    <div><div class="t">${esc(c.title)}</div><div class="m">${esc(c.names.A)} ↔ ${esc(c.names.B)} · ${c.dur.prep}+${c.dur.talk} мин</div><div class="d">${esc(c.blurb)}</div></div></label>`).join('');
+  const pc=CASES.find(c=>c.id===pickedCase)||CASES[0]||{names:{A:'Роль A',B:'Роль B'}};
+  return `<div class="landing">
+  <div class="stack lg">
+    <section class="hero">
+      <span class="eyebrow">Тренажёр переговоров</span>
+      <h1 class="display">Переговоры<br>один на один</h1>
+      <p class="lead">Два игрока, у каждого своя карточка роли и скрытая информация. Ведущий не нужен: таймеры, правила и разбор берёт на себя стол.</p>
+    </section>
+    <ol class="how">
+      <li><b>Комната</b><span>Создай и отправь ссылку. Созвон прямо здесь.</span></li>
+      <li><b>Подготовка · 5 мин</b><span>Читаешь свою карточку и отвечаешь себе на три вопроса.</span></li>
+      <li><b>Переговоры · 15 мин</b><span>Говорите и вместе пишете договорённость. Сделка — когда подписали оба.</span></li>
+      <li><b>Разбор</b><span>Карты открываются. Видно, что вытащили друг из друга.</span></li>
+    </ol>
+  </div>
+  <section class="form panel stack">
+    ${nameField()}
+    <div class="tabs" role="tablist"><button type="button" role="tab" data-lt="create" aria-selected="${lobbyTab==='create'}">Создать комнату</button><button type="button" role="tab" data-lt="join" aria-selected="${lobbyTab==='join'}">У меня есть код</button></div>
+    ${joinErr?`<p class="err" role="alert">${esc(joinErr)}</p>`:''}
+    ${lobbyTab==='create'?`
+      <div class="field"><span>Кейс</span><div class="cases">${cs||'<p class="note">Загружаем кейсы…</p>'}</div></div>
+      <div class="field"><span>Моя роль</span><div class="seg" id="roleSeg">
         <label><input type="radio" name="rl" value="R" checked>Случайно</label>
+        <label><input type="radio" name="rl" value="A">${esc(pc.names.A)}</label>
+        <label><input type="radio" name="rl" value="B">${esc(pc.names.B)}</label>
       </div></div>
-    <div class="row"><button class="btn primary" id="create" type="button" ${wsOpen?'':'disabled'}>Создать комнату</button></div>
-  </div>`:`<div class="panel stack">
-    <label class="f">Код комнаты<input type="text" id="codeIn" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"></label>
-    <div class="row"><button class="btn primary" id="join" type="button">Войти</button></div>
-  </div>`}
-  </section>`}
+      <button class="btn primary wide" id="create" type="button" ${wsOpen&&CASES.length?'':'disabled'}>Создать комнату</button>`
+    :`<label class="field"><span>Код комнаты</span><input type="text" id="codeIn" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off" class="mono"><small>Или просто открой ссылку, которую прислал собеседник</small></label>
+      <button class="btn primary wide" id="join" type="button" ${wsOpen?'':'disabled'}>Войти</button>`}
+  </section></div>`}
 
-function cardHTML(r){const R=st.case.roles[r];if(!R)return '';
+function inviteScreen(){return `<section class="stack lg" style="max-width:520px">
+  <div class="stack sm"><span class="eyebrow">Приглашение · комната ${esc(pendingCode)}</span><h1>Тебя позвали на переговоры</h1><p class="lead">Представься, и ты сразу окажешься в комнате. Регистрация не нужна.</p></div>
+  <div class="panel stack">${nameField()}<button class="btn primary wide" id="acceptInvite" type="button">Войти в комнату</button></div>
+  <button class="linkbtn" id="declineInvite" type="button">Создать свою комнату вместо этого</button>
+</section>`}
+
+function whoRows(){const r=me(),o=them(),P=st.players[o];
+  let pst='ждём подключения',cls='',dot='';
+  if(P){dot=P.online?'on':'off';
+    if(!P.online){pst='отключился';cls='st-bad'}
+    else if(st.phase===0){pst='в комнате';cls='st-ok'}
+    else if(st.phase===1){pst=st.ready[o]?'готов(а)':'готовится';cls=st.ready[o]?'st-ok':''}
+    else if(st.phase===2){pst=st.nodeal[o]?'предлагает разойтись':st.sign[o]?'подписал(а)':'обсуждает';cls=st.nodeal[o]?'st-bad':st.sign[o]?'st-ok':''}
+    else if(st.phase===3){pst=st.rematch[o]?'хочет реванш':'на разборе';cls=st.rematch[o]?'st-ok':''}}
+  return `<div class="person"><span class="chip ${r}">${r}</span><span class="nm">${esc(myName)}</span><span class="st">${esc(roleName(r))} · ты</span></div>
+  <div class="person"><span class="chip ${o}">${o}</span><span class="nm">${esc(P?P.name:'Собеседник')}</span><span class="st ${cls}"><i class="dot ${dot}" style="display:inline-block;margin-right:6px;vertical-align:1px"></i>${esc(pst)}</span></div>`}
+
+function cardHTML(r,opts={}){const R=st.case.roles[r];if(!R)return '';
   const li=a=>'<ul>'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
-  return `<article class="card" data-r="${r}">
-  <div class="card-head"><span class="tag">${esc(nameOf(r))}</span><h2>${esc(R.name)}</h2></div>
-  <div class="card-body">
+  const mask=opts.maskable&&secretMasked;
+  return `<article class="card">
+  <div class="card-h"><span class="chip ${r}">${r}</span><h2>${esc(R.name)}</h2>${opts.player?`<span class="who">играет ${esc(nameOf(r))}</span>`:''}</div>
+  <div class="card-b">
     <p class="want">${esc(R.want)}</p>
-    <div><h3>Считает</h3>${li(R.believes)}</div>
-    <div><h3>Боится</h3>${li(R.fears)}</div>
-    <div><h3>Задача</h3>${li(R.tasks)}</div>
-    <div><h3>Цели</h3>${li(R.goals)}</div>
+    <div class="cols">
+      <div><span class="eyebrow">Считает</span>${li(R.believes)}</div>
+      <div><span class="eyebrow">Боится</span>${li(R.fears)}</div>
+      <div><span class="eyebrow">Задача</span>${li(R.tasks)}</div>
+      <div><span class="eyebrow">Цели</span>${li(R.goals)}</div>
+    </div>
   </div>
-  <div class="seal"><h3>Скрытая информация · знает только ${esc(R.name)}</h3>${li(R.hidden)}</div>
-  </article>`}
-function ctxHTML(open){const c=st.case;return `<details class="ctx" ${open?'open':''}><summary>Контекст и ограничения · «${esc(c.title)}»</summary><div class="in">
-  ${c.context.map(p=>'<p>'+esc(p)+'</p>').join('')}<h3>Ограничения</h3><ul style="margin:0;padding-left:18px">${c.constraints.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div></details>`}
+  <div class="secret ${mask?'masked':''}">
+    <div class="row between"><span class="eyebrow">Скрытая информация · знает только ${esc(R.name)}</span>${opts.maskable?`<button class="secret-toggle" id="maskBtn" type="button">${mask?'Показать':'Скрыть с экрана'}</button>`:''}</div>
+    ${li(R.hidden)}
+  </div></article>`}
+function ctxHTML(open){const c=st.case;return `<details class="ctx" ${open?'open':''}><summary>Контекст и ограничения</summary><div class="in">
+  ${c.context.map(p=>'<p>'+esc(p)+'</p>').join('')}<span class="eyebrow" style="margin-top:6px">Ограничения</span><ul>${c.constraints.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div></details>`}
 
-function roomScreen(){const link=location.origin+'/r/'+st.code;return `<section class="stack">
-  <div class="panel stack" style="align-items:flex-start">
-    <h3>Код комнаты</h3><div class="code">${esc(st.code)}</div>
-    <div class="linkrow"><input type="text" id="linkIn" readonly value="${esc(link)}" aria-label="Ссылка-приглашение"><button class="btn" id="copyLink" type="button">Скопировать ссылку</button></div>
-    <p class="note">Отправь ссылку собеседнику или продиктуй код. Пока ждёте, включите камеру и микрофон.</p>
-    <div class="who" id="who"></div>
-    <div class="row"><button class="btn primary" id="start" type="button">Начать подготовку</button><button class="btn ghost" id="leave" type="button">Выйти из комнаты</button></div>
+function roomScreen(){const link=location.origin+'/r/'+st.code;return `<section class="stack lg">
+  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}»</span><h1>Ждём собеседника</h1><p class="lead">Ты играешь <b>${esc(roleName(me()))}</b>. Карточку роли откроешь на подготовке, когда подключатся оба.</p></div>
+  <div class="panel stack">
+    <span class="eyebrow">Код комнаты</span><div class="code">${esc(st.code)}</div>
+    <div class="linkrow"><input type="text" id="linkIn" readonly value="${esc(link)}" aria-label="Ссылка-приглашение"><button class="btn" id="copyLink" type="button">Скопировать</button></div>
+    <p class="note">Отправь ссылку собеседнику. Имя он введёт при входе.</p>
   </div>
-  <p class="lead">Ты играешь <b>${esc(st.case.names[me()])}</b>. Карточку роли откроешь на подготовке.</p>
+  <div class="panel stack">
+    <h2>Перед стартом</h2>
+    <ul class="checks">
+      <li id="ck1">Собеседник подключился</li>
+      <li id="ck2">Камера и микрофон включены — полоска на твоём видео двигается, когда говоришь</li>
+      <li id="ck3">Видеосвязь с собеседником установлена</li>
+    </ul>
+    <div class="row"><button class="btn primary" id="start" type="button">Начать подготовку</button><button class="btn ghost" id="leave" type="button">Выйти</button></div>
+    <p class="note" id="startNote"></p>
+  </div>
   ${ctxHTML(true)}
 </section>`}
 
-function prepScreen(){const p=Object.assign({},(st.prep[me()]||{}),prepDraft.code===st.code?prepDraft.v:{});return `<section class="stack">
-  <div class="stack" style="gap:8px"><h1>Подготовка</h1><p class="lead">Прочитай свою карточку и ответь себе на три вопроса. Микрофон лучше выключить: это время подумать. Ответы собеседник увидит только на разборе.</p></div>
+function prepScreen(){const p=Object.assign({},st.prep[me()]||{},draft().prep);return `<section class="stack lg">
+  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}» · ${st.case.dur.prep} минут</span><h1>Подготовка</h1><p class="lead">Прочитай карточку и ответь себе на три вопроса. Лучше выключить микрофон: это время подумать молча. Ответы собеседник увидит только на разборе.</p></div>
   ${ctxHTML(false)}
-  ${cardHTML(me())}
-  <div class="panel stack">${PREP.map(([k,l])=>`<label class="f">${l}<textarea id="p_${k}" data-prep="${k}" maxlength="400">${esc(p[k]||'')}</textarea></label>`).join('')}</div>
-  <div class="panel row" style="justify-content:space-between"><div class="who" id="who"></div>
-    <div class="row"><button class="btn ghost" id="skipPrep" type="button" hidden>Время вышло — начать разговор</button><button class="btn primary" id="ready" type="button"></button></div></div>
+  ${cardHTML(me(),{maskable:true})}
+  <div class="panel stack"><h2>Три вопроса к себе</h2>
+    ${PREP.map(([k,l])=>`<label class="field"><span>${l}</span><textarea id="p_${k}" data-prep="${k}" maxlength="400">${esc(p[k]||'')}</textarea></label>`).join('')}
+  </div>
+  <div class="panel row between"><p class="note" id="readyNote"></p>
+    <div class="row"><button class="btn" id="skipPrep" type="button" hidden>Время вышло — начать</button><button class="btn primary" id="ready" type="button"></button></div></div>
 </section>`}
 
-function talkScreen(){const p=st.prep[me()]||{};return `<section class="stack">
-  <div class="stack" style="gap:8px"><h1>Переговоры</h1><p class="lead">Говорите по видео. Договорённость записывайте здесь: поля общие, собеседник видит правки сразу.</p></div>
-  <div class="tabs" role="tablist"><button type="button" data-ct="me" aria-selected="${cardTab==='me'}">Моя карточка</button><button type="button" data-ct="ctx" aria-selected="${cardTab==='ctx'}">Контекст</button><button type="button" data-ct="prep" aria-selected="${cardTab==='prep'}">Мои заметки</button><button type="button" data-ct="hide" aria-selected="${cardTab==='hide'}">Скрыть</button></div>
-  ${cardTab==='me'?cardHTML(me()):cardTab==='ctx'?ctxHTML(true):cardTab==='prep'?`<div class="panel"><dl class="kv">${PREP.map(([k,l])=>`<dt>${l}</dt><dd>${esc(p[k]||'—')}</dd>`).join('')}</dl></div>`:''}
-  <div class="panel agr">
-    <h2>Договорённость</h2>
-    ${AGR.map(([k,l,ph])=>`<label class="f">${l}<textarea id="a_${k}" data-agr="${k}" maxlength="400" placeholder="${esc(ph)}"></textarea></label>`).join('')}
-    <div class="sig"><div class="who" id="who"></div>
+function talkScreen(){const p=st.prep[me()]||{},d=draft();const notes=d.notes!=null?d.notes:(st.notes[me()]||'');return `<section class="stack lg">
+  <div class="stack sm"><span class="eyebrow">«${esc(st.case.title)}» · ${st.case.dur.talk} минут</span><h1>Переговоры</h1><p class="lead">Говорите по видео, договорённость пишете ниже. Поля общие: собеседник видит правки сразу.</p></div>
+  <div class="stack">
+    <div class="tabs" role="tablist">
+      <button type="button" data-ct="card" aria-selected="${cardTab==='card'}">Моя карточка</button>
+      <button type="button" data-ct="ctx" aria-selected="${cardTab==='ctx'}">Контекст</button>
+      <button type="button" data-ct="notes" aria-selected="${cardTab==='notes'}">Заметки</button>
+      <button type="button" data-ct="hide" aria-selected="${cardTab==='hide'}">Свернуть</button>
+    </div>
+    ${cardTab==='card'?cardHTML(me(),{maskable:true}):cardTab==='ctx'?ctxHTML(true):cardTab==='notes'?`<div class="panel stack">
+      <label class="field"><span>Что я узнал(а) о собеседнике</span><small>Видишь только ты. Откроется обоим на разборе.</small><textarea id="notesIn" maxlength="1500" style="min-height:120px" placeholder="Проговорился, что… Уходит от вопроса про…">${esc(notes)}</textarea></label>
+      <dl class="kv">${PREP.map(([k,l])=>`<dt>${l}</dt><dd>${esc(p[k]||'—')}</dd>`).join('')}</dl></div>`:''}
+  </div>
+  <div class="panel stack">
+    <div class="row between"><h2>Договорённость</h2><div class="concrete" id="concrete"></div></div>
+    ${AGR.map(([k,l,ph])=>`<div class="agr-f"><div class="lbl-row"><span>${l}</span><span class="by" id="by_${k}"></span></div><textarea id="a_${k}" data-agr="${k}" maxlength="400" placeholder="${esc(ph)}" aria-label="${esc(l)}"></textarea><span class="lint" id="lint_${k}" hidden></span></div>`).join('')}
+    <div class="signbar"><div class="sigs" id="sigs"></div>
       <div class="row"><button class="btn danger" id="nodeal" type="button"></button><button class="btn primary" id="sign" type="button"></button></div></div>
     <p class="note" id="signNote"></p>
   </div>
+  <div class="panel stack">
+    <div class="stack sm"><h2>Спорные детали</h2><p class="note">Собеседник придумал обстоятельство, которое решает проблему в его пользу? Оспорь его. Автор либо снимает деталь, либо спор фиксируется для разбора.</p></div>
+    <div class="linkrow"><input type="text" id="dispIn" maxlength="200" placeholder="Например: «мне предложили работу в три раза дороже»" aria-label="Спорная деталь"><button class="btn" id="dispGo" type="button">Оспорить</button></div>
+    <div class="disp" id="dispList"></div>
+  </div>
 </section>`}
+
+function dispItem(d,interactive){const mine=d.by===me();
+  const stat=d.status==='accepted'?'деталь снята':d.status==='rejected'?'спор остался — разберите в конце':'ждёт ответа';
+  return `<div class="disp-item"><span class="meta">${esc(nameOf(d.by))} оспаривает · ${stat}</span><q>${esc(d.text)}</q>
+  ${interactive&&!mine&&d.status==='pending'?`<div class="row"><button class="btn sm" data-dr="${d.id}" data-v="1" type="button">Согласен(на), снимаю</button><button class="btn sm ghost" data-dr="${d.id}" data-v="0" type="button">Настаиваю</button></div>`:''}</div>`}
 
 function debriefScreen(){const c=st.case,r=me(),o=them(),deal=st.result==='deal';
   const my=st.review[r]||{score:{},hm:[],hl:[]};
-  const filled=AGR.slice(0,4).filter(([k])=>(st.agr[k]||'').trim().length>3).length;
+  const filled=KEY4.filter(([k])=>(st.agr[k]||'').trim().length>3).length;
   const opts=v=>['',1,2,3,4,5].map(n=>`<option value="${n}" ${String(v||'')===String(n)?'selected':''}>${n===''?'–':n}</option>`).join('');
-  return `<section class="stack">
-  <div class="banner ${deal?'deal':'nodeal'}"><h1>${deal?'Договорились':'Не договорились'}</h1>
-    <p>${deal?`Договорённость подписана обоими. Конкретность: заполнено ${filled} из 4 ключевых полей (кто, когда, условия, нарушение).`:esc(c.noDeal)}</p></div>
+  const notesBlock=[r,o].map(rr=>`<div class="stack sm"><span class="eyebrow">${esc(nameOf(rr))} · ${esc(c.roles[rr].name)}</span><p style="white-space:pre-wrap">${esc((st.notes||{})[rr]||'—')}</p></div>`).join('');
+  return `<section class="stack lg">
+  <div class="result ${deal?'deal':'nodeal'}"><span class="eyebrow">Раунд ${st.round} · «${esc(c.title)}»</span><h1>${deal?'Договорились':'Не договорились'}</h1>
+    <p>${deal?`Договорённость подписана обоими. Конкретность: ${filled} из 4 ключевых полей (кто, когда, условия, нарушение).`:esc(c.noDeal)}</p></div>
   ${deal?`<div class="panel stack"><h2>Итоговая договорённость</h2><dl class="kv">${AGR.map(([k,l])=>`<dt>${l}</dt><dd>${esc(st.agr[k]||'—')}</dd>`).join('')}</dl></div>`:''}
-  <div class="stack" style="gap:8px"><h2>Карты открыты</h2><p class="lead">Теперь видно всё, что было у собеседника.</p></div>
-  <div class="grid2">${cardHTML('A')}${cardHTML('B')}</div>
+  <div class="stack sm"><h2>Карты открыты</h2><p class="note">Теперь видно всё, что было у собеседника.</p></div>
+  <div class="grid2">${cardHTML(r,{player:true})}${cardHTML(o,{player:true})}</div>
   <div class="panel stack"><h2>Скрытая информация</h2>
-    <div class="stack" style="gap:10px"><h3>Моя (${esc(c.roles[r].name)})</h3>
-    ${c.roles[r].hidden.map((h,i)=>`<div class="stack" style="gap:6px"><p style="font-size:14px">${esc(h)}</p><div class="seg">
+    <div class="stack"><span class="eyebrow">Моя · что с ней стало</span>
+    ${c.roles[r].hidden.map((h,i)=>`<div class="stack sm"><p style="font-size:14px">${esc(h)}</p><div class="seg three">
       ${['Осталась при мне','Раскрыл(а) сам(а)','Её вытащили'].map((t,j)=>`<label><input type="radio" name="hm${i}" data-hm="${i}" value="${j}" ${my.hm[i]===j?'checked':''}>${t}</label>`).join('')}</div></div>`).join('')}</div>
-    <div class="stack" style="gap:8px"><h3>Собеседника (${esc(c.roles[o].name)}): я это выяснил(а)?</h3>
+    <div class="stack sm"><span class="eyebrow">Собеседника · я это выяснил(а)?</span>
     ${c.roles[o].hidden.map((h,i)=>`<label class="chk"><input type="checkbox" data-hl="${i}" ${my.hl[i]?'checked':''}><span>${esc(h)}</span></label>`).join('')}
     <p class="note" id="hlNote"></p></div>
   </div>
+  <div class="panel stack"><h2>Что каждый узнал о другом</h2><div class="grid2">${notesBlock}</div></div>
+  ${st.disputes.length?`<div class="panel stack"><h2>Спорные детали</h2><div class="disp">${st.disputes.map(d=>dispItem(d,false)).join('')}</div></div>`:''}
   <div class="panel stack"><h2>Подготовка обоих</h2><div class="grid2">
-    ${[r,o].map(rr=>`<div class="stack" style="gap:8px"><h3>${esc(nameOf(rr))} · ${esc(c.roles[rr].name)}</h3><dl class="kv">${PREP.map(([k,l])=>`<dt>${l}</dt><dd>${esc((st.prep[rr]||{})[k]||'—')}</dd>`).join('')}</dl></div>`).join('')}
+    ${[r,o].map(rr=>`<div class="stack sm"><span class="eyebrow">${esc(nameOf(rr))} · ${esc(c.roles[rr].name)}</span><dl class="kv">${PREP.map(([k,l])=>`<dt>${l}</dt><dd>${esc((st.prep[rr]||{})[k]||'—')}</dd>`).join('')}</dl></div>`).join('')}
   </div></div>
-  <div class="panel stack"><h2>Самооценка</h2><p class="note">От 1 до 5. Оценки собеседника появляются, как только он их ставит.</p>
-    <div class="score"><span class="hd">Критерий</span><span class="hd num">${esc(nameOf(r))}</span><span class="hd num">${esc(nameOf(o))}</span>
+  <div class="panel stack"><div class="stack sm"><h2>Самооценка</h2><p class="note">От 1 до 5. Оценки собеседника появляются, как только он их ставит. Сравните и обсудите расхождения.</p></div>
+    <div class="score"><span class="hd">Критерий</span><span class="hd">${esc(nameOf(r))}</span><span class="hd">${esc(nameOf(o))}</span>
     ${CRIT.map(([k,l])=>`<span>${l}</span><select id="s_${k}" data-sc="${k}" aria-label="${l}">${opts(my.score[k])}</select><span class="num" data-psc="${k}">—</span>`).join('')}</div>
   </div>
-  <div class="row"><button class="btn" id="again" type="button">Новая партия</button></div>
+  <div class="panel stack"><div class="stack sm"><h2>Что дальше</h2><p class="note">Реванш — тот же кейс, но вы меняетесь ролями. Лучший способ понять собеседника.</p></div>
+    <div class="row"><button class="btn primary" id="rematch" type="button"></button><button class="btn" id="copySum" type="button">Скопировать итог</button><button class="btn ghost" id="again" type="button">Выйти из комнаты</button></div>
+    <p class="note" id="rematchNote"></p></div>
 </section>`}
 
-/* ---------- live updates ---------- */
-function whoHTML(){if(!st)return '';const r=me(),o=them(),P=st.players[o];
-  let pst='<span class="st-mut">ждём, пока подключится…</span>',dot='';
-  if(P){dot=P.online?'on':'off';
-    if(!P.online)pst='<span class="st-bad">отключился</span>';
-    else if(st.phase===0)pst='<span class="st-ok">в комнате</span>';
-    else if(st.phase===1)pst=st.ready[o]?'<span class="st-ok">готов(а)</span>':'<span class="st-mut">готовится</span>';
-    else if(st.phase===2)pst=st.nodeal[o]?'<span class="st-bad">предлагает разойтись</span>':st.sign[o]?'<span class="st-ok">подписал(а)</span>':'<span class="st-mut">не подписал(а)</span>';
-    else pst='<span class="st-ok">на разборе</span>';}
-  return `<span class="pill"><span class="dot on"></span><b>${esc(myName)}</b>&nbsp;· ${esc(st.case.names[r])}</span><span class="pill"><span class="dot ${dot}"></span><b>${esc(P?P.name:st.case.names[o])}</b>&nbsp;· ${pst}</span>`}
-
+/* ============ live updates ============ */
 function updateLive(){
-  document.querySelectorAll('#who').forEach(w=>w.innerHTML=whoHTML());
   if(!st){tick();return}
-  const r=me(),o=them();
-  if($('start'))$('start').disabled=!(st.players.A&&st.players.B);
-  if($('ready'))$('ready').textContent=st.ready[r]?'Я не готов(а)':'Готов(а) к разговору';
-  if(st.phase===2){
-    document.querySelectorAll('[data-agr]').forEach(t=>{if(document.activeElement!==t&&t.value!==(st.agr[t.dataset.agr]||''))t.value=st.agr[t.dataset.agr]||''});
-    $('sign').textContent=st.sign[r]?'Снять подпись':'Подписать';
-    $('nodeal').textContent=st.nodeal[r]?'Отозвать «не договорились»':'Не договорились';
-    $('signNote').textContent=(st.nodeal[o]&&!st.nodeal[r])?'Собеседник предлагает признать, что договориться не вышло. Нажмёшь «Не договорились» — переходите к разбору.':
-      (st.sign[o]&&!st.sign[r])?'Собеседник подписал текущую версию. Подпиши и ты, чтобы закрыть сделку.':
-      'Любая правка текста снимает обе подписи. Сделка закрыта, когда оба подписали одну и ту же версию.';
+  $('whoAside').innerHTML=whoRows();
+  const r=me(),o=them(),P=partnerP();
+  if(st.phase===0){
+    const both=!!(st.players.A&&st.players.B);$('start').disabled=!both;
+    $('ck1').classList.toggle('ok',!!(P&&P.online));
+    $('ck2').classList.toggle('ok',!!localStream);
+    $('ck3').classList.toggle('ok',!!(pc&&pc.connectionState==='connected'));
+    $('startNote').textContent=both?'Можно начинать. Кнопку может нажать любой из вас.':'Кнопка станет активной, когда собеседник подключится.';
   }
-  if(st.phase===3){const P=st.review[o]||{};
-    CRIT.forEach(([k])=>{const el=document.querySelector(`[data-psc="${k}"]`);if(el)el.textContent=(P.score||{})[k]||'—'});
-    const hn=$('hlNote');if(hn&&P.hm){const n=st.case.roles[o].hidden.length,leaked=P.hm.filter(v=>v===1||v===2).length;hn.textContent=`По словам собеседника, из его скрытого раскрыто или вытащено: ${leaked} из ${n}.`}}
+  if(st.phase===1){
+    $('ready').textContent=st.ready[r]?'Я ещё не готов(а)':'Готов(а) к разговору';
+    $('ready').classList.toggle('primary',!st.ready[r]);
+    $('readyNote').textContent=st.ready[r]?(st.ready[o]?'':'Ждём собеседника. Переговоры начнутся, когда готовы оба.'):st.ready[o]?'Собеседник уже готов.':'Переговоры начнутся, когда оба нажмут «Готов».';
+  }
+  if(st.phase===2){
+    document.querySelectorAll('[data-agr]').forEach(t=>{const k=t.dataset.agr,v=st.agr[k]||'';if(pend[k]!==undefined&&(pend[k]===v||Date.now()-pend[k+'_t']>3000))delete pend[k];if(pend[k]===undefined&&document.activeElement!==t&&t.value!==v)t.value=v;lint(k,t.value);
+      const by=st.agrBy[k];$('by_'+k).textContent=by&&v?'правил(а) '+nameOf(by):''});
+    paintConcrete();
+    $('sign').textContent=st.sign[r]?'Снять подпись':'Подписать';$('sign').classList.toggle('primary',!st.sign[r]);
+    $('nodeal').textContent=st.nodeal[r]?'Отозвать':'Не договорились';
+    $('sigs').innerHTML=[r,o].map(x=>`<span><span class="chip ${x}">${x}</span>${esc(nameOf(x))}: <b class="${st.sign[x]?'st-ok':st.nodeal[x]?'st-bad':''}">${st.sign[x]?'подписал(а)':st.nodeal[x]?'не договорились':'не подписал(а)'}</b></span>`).join('');
+    $('signNote').textContent=(st.nodeal[o]&&!st.nodeal[r])?'Собеседник предлагает признать, что договориться не вышло. Нажми «Не договорились», если согласен(на).':
+      (st.sign[o]&&!st.sign[r])?'Собеседник подписал текущую версию. Подпиши и ты, чтобы закрыть сделку.':
+      'Любая правка снимает обе подписи. Сделка закрыта, когда оба подписали одну и ту же версию.';
+    const dl=$('dispList');if(dl)dl.innerHTML=st.disputes.slice().reverse().map(d=>dispItem(d,true)).join('');
+  }
+  if(st.phase===3){const R=st.review[o]||{};
+    CRIT.forEach(([k])=>{const el=document.querySelector(`[data-psc="${k}"]`);if(el)el.textContent=(R.score||{})[k]||'—'});
+    const hn=$('hlNote');if(hn){const n=st.case.roles[o].hidden.length,hm=R.hm||[],leaked=hm.filter(v=>v===1||v===2).length;hn.textContent=hm.length?`По словам собеседника, из его скрытого раскрыто или вытащено: ${leaked} из ${n}.`:''}
+    $('rematch').textContent=st.rematch[r]?'Отменить реванш':'Реванш: поменяться ролями';
+    $('rematch').classList.toggle('primary',!st.rematch[r]);
+    $('rematchNote').textContent=st.rematch[r]&&!st.rematch[o]?'Ждём, пока собеседник тоже нажмёт «Реванш».':st.rematch[o]&&!st.rematch[r]?'Собеседник предлагает реванш.':'';
+  }
   tick();
 }
+function lint(k,v){const el=$('lint_'+k);if(!el)return;let msg='';
+  if(v.trim()){if(VAGUE.test(v)){const w=(v.match(new RegExp('[^\\s,.;!?]*'+VAGUE.source+'[^\\s,.;!?]*','i'))||[''])[0];msg='«'+w+'» — это не договорённость. Нужны конкретное действие и срок.'}
+    else if(k==='when'&&!DATEISH.test(v))msg='Укажи дату или конкретный срок.';}
+  el.textContent=msg;el.hidden=!msg}
+function paintConcrete(){const c=$('concrete');if(!c)return;
+  c.innerHTML=KEY4.map(([k,l])=>{const v=(document.querySelector(`[data-agr="${k}"]`)||{}).value||st.agr[k]||'';const ok=v.trim().length>3&&!VAGUE.test(v)&&(k!=='when'||DATEISH.test(v));return `<span class="${ok?'ok':''}">${l}</span>`}).join('')}
 
-const tEl=$('timer');
+/* ---------- timer + nudges ---------- */
+const tEl=$('timer'),fired=new Set();
 function tick(){
   if(!st||!(st.phase===1||st.phase===2)){tEl.hidden=true;return}
   const lim=(st.phase===1?st.case.dur.prep:st.case.dur.talk)*60e3,at=st.at[st.phase];
@@ -415,72 +617,86 @@ function tick(){
   tEl.hidden=false;tEl.textContent=(left<0?'+':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   tEl.classList.toggle('late',left<0);tEl.classList.toggle('soon',left>=0&&left<(st.phase===2?5:1)*60e3);
   const sk=$('skipPrep');if(sk)sk.hidden=!(st.phase===1&&left<0);
+  const marks=st.phase===1?[[60e3,'Минута до конца подготовки'],[0,'Подготовка окончена. Нажмите «Готов» или начинайте']]:[[300e3,'Осталось 5 минут. Пора фиксировать договорённость'],[60e3,'Последняя минута'],[0,'Время вышло: подписывайте или признайте, что не договорились']];
+  for(const [th,msg] of marks){const k=st.round+':'+st.phase+':'+th;if(left<=th&&left>th-4000&&!fired.has(k)){fired.add(k);toast(msg)}}
 }
 setInterval(tick,500);
 
-/* ---------- events ---------- */
-let agrT={};
+/* ============ events ============ */
+const deb={},pend={};
+function takeName(){const el=$('nameIn');const v=(el&&el.value||'').trim();if(!v){el&&el.focus();toast('Сначала введи имя');return false}
+  myName=v.slice(0,40);store.set('neg_name',myName);send({type:'id',clientId,name:myName});return true}
 function bind(){
   document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{lobbyTab=b.dataset.lt;joinErr='';render()});
-  document.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{cardTab=b.dataset.ct;render()});
-  if($('nameIn')){$('nameIn').value=myName;$('nameIn').focus();
-    const go=()=>{const v=$('nameIn').value.trim();if(!v){$('nameIn').focus();return}myName=v.slice(0,40);store.set('neg_name',myName);send({type:'id',clientId,name:myName});
-      if(pendingCode)send({type:'join',code:pendingCode});render()};
-    $('nameGo').onclick=go;$('nameIn').onkeydown=e=>{if(e.key==='Enter')go()}}
-  if($('rename'))$('rename').onclick=()=>{myName='';store.del('neg_name');render()};
-  if($('caseSel'))$('caseSel').onchange=e=>{const c=CASES.find(x=>x.id===e.target.value);if(c){$('rnA').textContent=c.names.A;$('rnB').textContent=c.names.B}};
-  if($('create'))$('create').onclick=()=>{const v=(document.querySelector('input[name=rl]:checked')||{}).value;send({type:'create',caseId:$('caseSel').value,role:v==='R'?null:v})};
-  if($('join')){const go=()=>{const v=$('codeIn').value.trim();if(!/^\d{4}$/.test(v)){joinErr='Код — это 4 цифры.';render();return}send({type:'join',code:v})};
-    $('join').onclick=go;$('codeIn').onkeydown=e=>{if(e.key==='Enter')go()}}
-  if($('copyLink'))$('copyLink').onclick=()=>{const v=$('linkIn').value;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Ссылка скопирована')).catch(()=>{$('linkIn').select();toast('Выдели и скопируй ссылку')})};
+  document.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{cardTab=b.dataset.ct;lastKey='';render()});
+  if($('nameIn'))$('nameIn').oninput=e=>{nameDraft=e.target.value};
+  document.querySelectorAll('input[name=case]').forEach(i=>i.onchange=()=>{pickedCase=i.value;const n=CASES.find(c=>c.id===pickedCase).names;const ls=document.querySelectorAll('#roleSeg label');ls[1].lastChild.textContent=n.A;ls[2].lastChild.textContent=n.B});
+  if($('create'))$('create').onclick=()=>{if(!takeName())return;const v=(document.querySelector('input[name=rl]:checked')||{}).value;send({type:'create',caseId:pickedCase,role:v==='R'?null:v})};
+  if($('join')){const go=()=>{if(!takeName())return;const v=$('codeIn').value.trim();if(!/^\d{4}$/.test(v)){joinErr='Код — это 4 цифры.';render();return}send({type:'join',code:v})};$('join').onclick=go;$('codeIn').onkeydown=e=>{if(e.key==='Enter')go()}}
+  if($('acceptInvite')){const go=()=>{if(!takeName())return;send({type:'join',code:pendingCode});render()};$('acceptInvite').onclick=go;$('nameIn').onkeydown=e=>{if(e.key==='Enter')go()};$('nameIn').focus()}
+  if($('declineInvite'))$('declineInvite').onclick=()=>{pendingCode=null;history.replaceState(null,'','/');render()};
+  if($('copyLink'))$('copyLink').onclick=()=>copy($('linkIn').value,'Ссылка скопирована',$('linkIn'));
   if($('leave'))$('leave').onclick=leave;
   if($('start'))$('start').onclick=()=>send({type:'start'});
   if($('ready'))$('ready').onclick=()=>send({type:'ready',v:!st.ready[me()]});
   if($('skipPrep'))$('skipPrep').onclick=()=>send({type:'skipPrep'});
-  document.querySelectorAll('[data-prep]').forEach(t=>t.oninput=()=>{
-    const v={};document.querySelectorAll('[data-prep]').forEach(x=>v[x.dataset.prep]=x.value);
-    prepDraft={code:st.code,v};store.set('neg_prep',JSON.stringify(prepDraft));
-    clearTimeout(agrT.prep);agrT.prep=setTimeout(()=>send({type:'prep',data:v}),300)});
-  document.querySelectorAll('[data-agr]').forEach(t=>t.oninput=()=>{const k=t.dataset.agr;clearTimeout(agrT[k]);agrT[k]=setTimeout(()=>send({type:'agr',field:k,value:t.value}),250)});
+  if($('maskBtn'))$('maskBtn').onclick=()=>{secretMasked=!secretMasked;lastKey='';render()};
+  document.querySelectorAll('[data-prep]').forEach(t=>t.oninput=()=>{const v={};document.querySelectorAll('[data-prep]').forEach(x=>v[x.dataset.prep]=x.value);
+    draft().prep=v;saveDrafts();clearTimeout(deb.prep);deb.prep=setTimeout(()=>send({type:'prep',data:v}),300)});
+  if($('notesIn'))$('notesIn').oninput=e=>{draft().notes=e.target.value;saveDrafts();clearTimeout(deb.notes);deb.notes=setTimeout(()=>send({type:'notes',value:e.target.value}),400)};
+  document.querySelectorAll('[data-agr]').forEach(t=>t.oninput=()=>{const k=t.dataset.agr,val=t.value;pend[k]=val;pend[k+'_t']=Date.now()+1e4;lint(k,val);paintConcrete();clearTimeout(deb[k]);deb[k]=setTimeout(()=>{pend[k+'_t']=Date.now();send({type:'agr',field:k,value:val})},250)});
   if($('sign'))$('sign').onclick=()=>send({type:'sign',v:!st.sign[me()]});
   if($('nodeal'))$('nodeal').onclick=()=>send({type:'nodeal',v:!st.nodeal[me()]});
+  if($('dispGo')){const go=()=>{const v=$('dispIn').value.trim();if(!v){$('dispIn').focus();return}send({type:'dispute',text:v});$('dispIn').value=''};$('dispGo').onclick=go;$('dispIn').onkeydown=e=>{if(e.key==='Enter')go()}}
+  if($('dispList'))$('dispList').onclick=e=>{const b=e.target.closest('[data-dr]');if(b)send({type:'disputeResolve',id:+b.dataset.dr,v:b.dataset.v==='1'})};
   document.querySelectorAll('[data-sc]').forEach(s=>s.onchange=()=>send({type:'review',score:{[s.dataset.sc]:+s.value||0}}));
   document.querySelectorAll('[data-hm]').forEach(i=>i.onchange=()=>{const hm=[...(st.review[me()].hm||[])];hm[+i.dataset.hm]=+i.value;send({type:'review',hm})});
   document.querySelectorAll('[data-hl]').forEach(i=>i.onchange=()=>{const hl=[...(st.review[me()].hl||[])];hl[+i.dataset.hl]=i.checked?1:0;send({type:'review',hl})});
+  if($('rematch'))$('rematch').onclick=()=>send({type:'rematch',v:!st.rematch[me()]});
+  if($('copySum'))$('copySum').onclick=()=>copy(summary(),'Итог скопирован');
   if($('again'))$('again').onclick=leave;
 }
-function leave(){send({type:'leave'});st=null;lastKey='';cardTab='me';store.del('neg_room');store.del('neg_prep');prepDraft={};closePC();history.replaceState(null,'','/');render()}
+function summary(){const c=st.case,r=me(),o=them(),L=[];
+  L.push(`Переговорный стол · «${c.title}» · раунд ${st.round}`);
+  L.push(`${nameOf('A')} — ${c.roles.A.name}, ${nameOf('B')} — ${c.roles.B.name}`);
+  L.push(st.result==='deal'?'Итог: договорились':'Итог: не договорились');
+  if(st.result==='deal')AGR.forEach(([k,l])=>{if(st.agr[k])L.push(`${l}: ${st.agr[k]}`)});
+  if(st.disputes.length)L.push('Спорные детали: '+st.disputes.map(d=>`«${d.text}» (${d.status==='accepted'?'снята':d.status==='rejected'?'спор остался':'без ответа'})`).join('; '));
+  L.push('Самооценка:');CRIT.forEach(([k,l])=>L.push(`  ${l}: ${nameOf(r)} ${(st.review[r].score||{})[k]||'–'} / ${nameOf(o)} ${((st.review[o]||{}).score||{})[k]||'–'}`));
+  return L.join('\n')}
+function copy(text,ok,fallbackEl){(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>toast(ok)).catch(()=>{if(fallbackEl){fallbackEl.select();toast('Выдели и скопируй вручную')}else toast('Не удалось скопировать')})}
+function leave(){send({type:'leave'});st=null;lastKey='';cardTab='card';store.del('neg_room');store.del('neg_drafts');drafts={};closePC();history.replaceState(null,'','/');render()}
 
-let toastT;function toast(t){let el=document.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';el.setAttribute('role','status');document.body.appendChild(el)}el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2500)}
-
+let toastT;function toast(t){let el=document.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';el.setAttribute('role','status');document.body.appendChild(el)}
+  el.hidden=false;el.textContent=t;el.style.animation='none';void el.offsetWidth;el.style.animation='';clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,3200)}
 const rules=$('rules');
-$('rulesBtn').onclick=()=>rules.hidden=false;$('rulesClose').onclick=()=>rules.hidden=true;
+$('rulesBtn').onclick=()=>{rules.hidden=false;$('rulesClose').focus()};$('rulesClose').onclick=()=>rules.hidden=true;
 rules.onclick=e=>{if(e.target===rules)rules.hidden=true};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')rules.hidden=true});
-const connEl=$('conn');
-function setConn(s,t){connEl.querySelector('.dot').className='dot '+(s==='on'?'on':s==='off'?'off':'');connEl.lastElementChild.textContent=t}
+function setConn(s,t){$('conn').querySelector('.dot').className='dot '+(s==='on'?'on':s==='off'?'off':'');$('conn').querySelector('.conn-t').textContent=t}
+$('callToggle').onclick=()=>{const c=aside.classList.toggle('collapsed');$('callToggle').textContent=c?'Развернуть видео':'Свернуть видео'};
 
-/* ---------- video call (WebRTC, perfect negotiation) ---------- */
-let pc=null, epoch=-1, localStream=null, makingOffer=false, ignoreOffer=false, remoteStream=null;
-const vMe=$('vMe'), vThem=$('vThem');
+/* ============ video call: WebRTC, perfect negotiation ============ */
+let pc=null,epoch=-1,localStream=null,makingOffer=false,ignoreOffer=false,remoteStream=null,actx=null;
+const vMe=$('vMe'),vThem=$('vThem'),meters={me:null,them:null};
 function sig(data){send({type:'rtc',epoch,data})}
-function closePC(){if(pc){try{pc.close()}catch(e){}}pc=null;remoteStream=null;vThem.srcObject=null;epoch=-1;paintTiles()}
+function closePC(){if(pc){try{pc.close()}catch(e){}}pc=null;remoteStream=null;vThem.srcObject=null;meters.them=null;epoch=-1;paintTiles()}
 function syncCall(){
   if(!st){closePC();return}
   const P=partnerP();
-  if(st.rtcEpoch!==epoch){if(pc){try{pc.close()}catch(e){}pc=null;remoteStream=null;vThem.srcObject=null}
-    epoch=st.rtcEpoch; if(P&&P.online)createPC()}
+  if(st.rtcEpoch!==epoch){if(pc){try{pc.close()}catch(e){}pc=null;remoteStream=null;vThem.srcObject=null;meters.them=null}
+    epoch=st.rtcEpoch;if(P&&P.online)createPC()}
   paintTiles();
 }
 function createPC(){
-  const polite=me()==='B';
-  const p=new RTCPeerConnection({iceServers:ICE});pc=p;
+  const p=new RTCPeerConnection({iceServers:ICE});pc=p;p._polite=me()==='B';
   p.ontrack=e=>{if(p!==pc)return;remoteStream=e.streams[0]||remoteStream||new MediaStream();if(!e.streams[0])remoteStream.addTrack(e.track);
-    vThem.srcObject=remoteStream;vThem.play().catch(()=>{});e.track.onunmute=paintTiles;e.track.onmute=paintTiles;e.track.onended=paintTiles;paintTiles()};
+    vThem.srcObject=remoteStream;vThem.play().catch(()=>{});
+    e.track.onunmute=paintTiles;e.track.onmute=paintTiles;e.track.onended=paintTiles;
+    if(e.track.kind==='audio')meters.them=meter(remoteStream);paintTiles()};
   p.onicecandidate=e=>{if(p===pc)sig({candidate:e.candidate})};
   p.onnegotiationneeded=async()=>{try{makingOffer=true;await p.setLocalDescription();sig({description:p.localDescription})}catch(e){console.warn(e)}finally{makingOffer=false}};
-  p.onconnectionstatechange=()=>{paintTiles();if(p.connectionState==='failed')p.restartIce&&p.restartIce()};
-  p._polite=polite;
+  p.onconnectionstatechange=()=>{paintTiles();updateLive();if(p.connectionState==='failed'&&p.restartIce)p.restartIce()};
   if(localStream)localStream.getTracks().forEach(t=>p.addTrack(t,localStream));
 }
 async function onRtc(m){
@@ -488,47 +704,56 @@ async function onRtc(m){
   try{
     if(description){
       const collision=description.type==='offer'&&(makingOffer||p.signalingState!=='stable');
-      ignoreOffer=!p._polite&&collision; if(ignoreOffer)return;
+      ignoreOffer=!p._polite&&collision;if(ignoreOffer)return;
       await p.setRemoteDescription(description);
       if(description.type==='offer'){await p.setLocalDescription();sig({description:p.localDescription})}
-    }else if(candidate!==undefined){
-      try{await p.addIceCandidate(candidate||null)}catch(e){if(!ignoreOffer)console.warn(e)}
-    }
+    }else if(candidate!==undefined){try{await p.addIceCandidate(candidate||null)}catch(e){if(!ignoreOffer)console.warn(e)}}
   }catch(e){console.warn(e)}
 }
+function note(t){$('callNote').textContent=t||'';$('callNote').hidden=!t}
 async function mediaOn(){
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('callNote').textContent='Браузер не даёт доступ к камере. Нужен HTTPS и современный браузер.';return}
-  try{localStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:{width:{ideal:640},height:{ideal:480}}})}
-  catch(e){try{localStream=await navigator.mediaDevices.getUserMedia({audio:true});$('callNote').textContent='Камера недоступна, подключили только микрофон.'}
-    catch(e2){$('callNote').textContent='Нет доступа к камере и микрофону. Разреши доступ в настройках браузера для этого сайта.';return}}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){note('Браузер не даёт доступ к камере. Нужен HTTPS и современный браузер.');return}
+  try{localStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:{width:{ideal:640},height:{ideal:480},facingMode:'user'}});note('')}
+  catch(e){try{localStream=await navigator.mediaDevices.getUserMedia({audio:true});note('Камера недоступна — подключили только микрофон.')}
+    catch(e2){note('Нет доступа к камере и микрофону. Разреши его в настройках браузера для этого сайта и нажми кнопку ещё раз.');return}}
   vMe.srcObject=localStream;
+  try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}
+  meters.me=meter(localStream);if(remoteStream&&!meters.them)meters.them=meter(remoteStream);
   if(pc)localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
-  paintTiles();
+  paintTiles();updateLive();
 }
+function meter(stream){try{if(!actx||!stream.getAudioTracks().length)return null;const src=actx.createMediaStreamSource(stream),an=actx.createAnalyser();an.fftSize=512;src.connect(an);return {an,buf:new Uint8Array(an.fftSize),lvl:0}}catch(e){return null}}
+function readLvl(m){if(!m)return 0;m.an.getByteTimeDomainData(m.buf);let s=0;for(const v of m.buf){const x=(v-128)/128;s+=x*x}const rms=Math.sqrt(s/m.buf.length);m.lvl=Math.max(Math.min(1,rms*4),m.lvl*.85);return m.lvl}
+(function loop(){
+  const micOn=localStream&&localStream.getAudioTracks().some(t=>t.enabled);
+  const lm=micOn?readLvl(meters.me):0,lt=readLvl(meters.them);
+  $('tileMe').style.setProperty('--lvl',lm.toFixed(2));$('tileThem').style.setProperty('--lvl',lt.toFixed(2));
+  $('tileMe').classList.toggle('speaking',lm>.18);$('tileThem').classList.toggle('speaking',lt>.18);
+  requestAnimationFrame(loop)})();
+document.addEventListener('click',()=>{if(actx&&actx.state==='suspended')actx.resume()});
 function toggle(kind){if(!localStream)return;localStream.getTracks().filter(t=>t.kind===kind).forEach(t=>t.enabled=!t.enabled);paintTiles()}
 function paintTiles(){
-  if(!st){return}
-  const r=me(),o=them(),P=st.players[o];
-  $('tileMe').dataset.r=r;$('tileThem').dataset.r=o;
-  const init=s=>(s||'?').trim().slice(0,1).toUpperCase();
-  const myVid=localStream&&localStream.getVideoTracks().some(t=>t.enabled&&t.readyState==='live');
-  const myMic=localStream&&localStream.getAudioTracks().some(t=>t.enabled);
-  $('phMe').hidden=!!myVid;$('phMe').textContent=init(myName);
-  $('lblMe').innerHTML=`${esc(myName)} <i>${localStream?(myMic?'':'микрофон выкл'):'без звука'}</i>`;
-  const theirVid=remoteStream&&remoteStream.getVideoTracks().some(t=>t.readyState==='live'&&!t.muted);
-  $('phThem').hidden=!!theirVid;$('phThem').textContent=init(P?P.name:'?');
+  if(!st)return;
+  const o=them(),P=st.players[o];
+  const init=s=>(s||'?').trim().slice(0,1).toUpperCase()||'?';
+  const myVid=!!(localStream&&localStream.getVideoTracks().some(t=>t.enabled&&t.readyState==='live'));
+  const myMic=!!(localStream&&localStream.getAudioTracks().some(t=>t.enabled));
+  $('phMe').hidden=myVid;$('phMe').firstElementChild.textContent=init(myName);
+  $('nmMe').textContent=myName+' · ты';
+  $('stMe').hidden=!!(localStream&&myMic);$('stMe').textContent=localStream?'микрофон выкл':'не подключены';
+  $('mMe').hidden=!myMic;
+  const theirVid=!!(remoteStream&&remoteStream.getVideoTracks().some(t=>t.readyState==='live'&&!t.muted));
+  $('phThem').hidden=theirVid;$('phThem').firstElementChild.textContent=P?init(P.name):'?';
+  $('nmThem').textContent=P?P.name:'Ждём собеседника';
   const cs=pc?pc.connectionState:'';
-  $('lblThem').innerHTML=`${esc(P?P.name:'ждём собеседника')} <i>${!P||!P.online?'':cs==='connected'?'':cs==='connecting'||cs==='new'?'соединяем…':cs==='failed'?'нет соединения':''}</i>`;
+  const tst=!P?'':!P.online?'отключился':cs==='failed'?'нет соединения':(cs==='connecting'||cs==='new')&&remoteStream?'соединяем…':'';
+  $('stThem').hidden=!tst;$('stThem').textContent=tst;$('mThem').hidden=!meters.them;
   $('mediaOn').hidden=!!localStream;$('micBtn').hidden=$('camBtn').hidden=!localStream;
-  if(localStream){$('micBtn').textContent=myMic?'Выключить микрофон':'Включить микрофон';$('micBtn').classList.toggle('off',!myMic);
-    const hasCam=localStream.getVideoTracks().length>0;$('camBtn').hidden=!hasCam;$('camBtn').textContent=myVid?'Выключить камеру':'Включить камеру';$('camBtn').classList.toggle('off',!myVid)}
-  $('callNote').textContent=cs==='failed'?'Видео не пробилось через сеть. Попробуйте другую сеть (например, мобильный интернет) или настройте TURN-сервер — см. README.':$('callNote').textContent.startsWith('Нет доступа')||$('callNote').textContent.startsWith('Камера')||$('callNote').textContent.startsWith('Браузер')?$('callNote').textContent:'';
+  if(localStream){$('micBtn').textContent=myMic?'Микрофон вкл':'Микрофон выкл';$('micBtn').classList.toggle('danger',!myMic);$('micBtn').setAttribute('aria-pressed',String(!myMic));
+    const hasCam=localStream.getVideoTracks().length>0;$('camBtn').hidden=!hasCam;$('camBtn').textContent=myVid?'Камера вкл':'Камера выкл';$('camBtn').classList.toggle('danger',!myVid);$('camBtn').setAttribute('aria-pressed',String(!myVid))}
+  if(cs==='failed')note('Видео не пробилось через сеть. Попробуйте другую сеть (например, мобильный интернет) или подключите TURN-сервер — см. README.');
 }
 $('mediaOn').onclick=mediaOn;$('micBtn').onclick=()=>toggle('audio');$('camBtn').onclick=()=>toggle('video');
-$('callHide').onclick=()=>{callHidden=true;render();toast('Видео свернуто, звук идёт. Вернуть — кнопка «Видео» вверху')};
-// кнопка вернуть видео
-window.showCall=document.createElement('button');showCall.hidden=true;showCall.className='linkbtn';showCall.type='button';showCall.textContent='Видео';showCall.onclick=()=>{callHidden=false;render()};
-$('rulesBtn').before(showCall);
 
 render();connect();
 </script>
